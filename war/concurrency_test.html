@@ -2,15 +2,21 @@
   <head>
     <script src='https://cdn.firebase.com/js/client/1.1.1/firebase.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <script src='helper.js'></script>
   </head>
   <body>
     <h1>Hi there!</h1>
+    <div id='session_input'>
+      <input type='text' id='session-id-input' placebolder='Session ID'>
+      <button class="btn btn-primary" id="session-id-update" onclick="jump_to_session()">Jump to Session</button>
+    </div>
+    
     <div id='messagesDiv'></div>
     <input type='text' id='nameInput' placeholder='Name'>
     <input type='text' id='messageInput' placeholder='Message'>
     <script>
-     /* var myDataRef = new Firebase('https://y0jfgrm2lxq.firebaseio-demo.com/'); */
-     var myDataRef = new Firebase('https://sizzling-torch-8770.firebaseIO.com/'); 
+     var myDataRef = init_session_id();
+     $('#session-id-input').val(get_current_session_id());
      $('#messageInput').keypress(function (e) {
        if (e.keyCode == 13) {
          var name = $('#nameInput').val();
