@@ -140,8 +140,6 @@ var board = function(x, y, width, height) {
 
     for (var i=0; i<this.rows; ++i) {
         for (var j=0; j<this.cols; ++j) {
-            /* this.cells[i][j] = */
-            /*     new cell(i*x, j*y, width_delta, height_delta); */
             this.cells[i*this.rows + j] =
                 new cell(j*width_delta + this.x, i*height_delta + this.y,
                          width_delta, height_delta);
@@ -248,7 +246,7 @@ var superboard = function(x, y, width, height) {
     for (var i=0; i<this.rows; ++i) {
         for (var j=0; j<this.cols; ++j) {
             this.boards[i*this.rows + j] =
-                new board(i*width_delta + this.x, j*height_delta + this.y,
+                new board(j*width_delta + this.x, i*height_delta + this.y,
                           width_delta, height_delta);
         }
     }
