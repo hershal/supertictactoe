@@ -41,6 +41,9 @@
         <!-- Game board functions -->
         <script src="/game_board.js"></script>
 
+        <!-- Game board Event functions -->
+        <script src="/game_events.js"></script>
+
         <!-- The Firebase data store -->
         <script src='https://cdn.firebase.com/js/client/1.1.1/firebase.js'></script>
 
@@ -217,8 +220,9 @@
              var pos = getMousePos(canvas, evt);
              var cellAt = sb1.getCellAt(pos.x, pos.y);
              if (cellAt != null) {
-                 cellAt.val.set_occupant("x");
+                 /* cellAt.val.set_occupant("x"); */
                  alert("outer: " + cellAt.id_outer + ", inner: " + cellAt.id_inner);
+                 check_valid_move(game_ref.toString(), "x", cellAt.id_outer, cellAt.id_inner);
              }
              sb1.draw(ctx);
          }, false);
