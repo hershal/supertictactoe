@@ -23,6 +23,7 @@ function draw_player_glyph(ctx, player, center_x, center_y, inner_radius) {
 function draw_x(ctx, center_x, center_y, inner_radius) {
 
     ctx.beginPath();
+    ctx.strokeStyle = 'white';
     ctx.moveTo(center_x - inner_radius, center_y - inner_radius);
     ctx.lineTo(center_x + inner_radius, center_y + inner_radius);
     ctx.moveTo(center_x - inner_radius, center_y + inner_radius);
@@ -33,6 +34,7 @@ function draw_x(ctx, center_x, center_y, inner_radius) {
 function draw_o(ctx, center_x, center_y, inner_radius) {
 
     ctx.beginPath();
+    ctx.strokeStyle = 'white';
     ctx.arc(center_x, center_y, inner_radius, 0, Math.PI * 2, false);
     ctx.stroke();
 }
