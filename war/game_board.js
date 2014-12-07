@@ -1,11 +1,41 @@
 k_o_fill_color = "#ff9800";
 k_x_fill_color = "#2196f3";
+k_hover_fill_color = "#aaaaaa";
 k_null_fill_color = "#ffffff";
 
 k_hover_alpha = 0.1;
-k_fill_alpha = 0.5;
-
+k_fill_alpha = 1.0
 k_win_alpha = 0.85;
+k_null_alpha = 1.0;
+
+function draw_player_glyph(ctx, player, center_x, center_y, inner_radius) {
+
+    if (player == null) { return; }
+    else if (player == "x") {
+        /* Draw the X */
+        draw_x(ctx, center_x, center_y, inner_radius)
+    } else if (player == "o") {
+        /* Draw the O */
+        draw_o(ctx, center_x, center_y, inner_radius)
+    }
+}
+
+function draw_x(ctx, center_x, center_y, inner_radius) {
+
+    ctx.beginPath();
+    ctx.moveTo(center_x - inner_radius, center_y - inner_radius);
+    ctx.lineTo(center_x + inner_radius, center_y + inner_radius);
+    ctx.moveTo(center_x - inner_radius, center_y + inner_radius);
+    ctx.lineTo(center_x + inner_radius, center_y - inner_radius);
+    ctx.stroke();
+}
+
+function draw_o(ctx, center_x, center_y, inner_radius) {
+
+    ctx.beginPath();
+    ctx.arc(center_x, center_y, inner_radius, 0, Math.PI * 2, false);
+    ctx.stroke();
+}
 
 /* The top left is the "x,y" reference corner */
 var cell = function(x, y, width, height) {
@@ -26,6 +56,7 @@ cell.prototype.set_occupant = function(occupant) {
 }
 
 cell.prototype.set_hover = function(hover) {
+
     this.hover = hover;
 }
 
@@ -56,9 +87,9 @@ cell.prototype.fill_box = function(ctx) {
         this._fill_bg(ctx, k_x_fill_color, k_fill_alpha);
     } else {
         if (this.hover) {
-            this._fill_bg(ctx, k_x_fill_color, k_hover_alpha);
+            this._fill_bg(ctx, k_hover_fill_color, k_hover_alpha);
         } else {
-            this._fill_bg(ctx, k_null_fill_color, 1.0);
+            this._fill_bg(ctx, k_null_fill_color, k_null_alpha);
         }
     }
 }
@@ -73,6 +104,10 @@ cell.prototype.draw = function(ctx) {
     this.clear(ctx);
     this.fill_box(ctx);
     this.stroke_box(ctx);
+    var inner_radius = this.height > this.width ? this.width*1/4 : this.height*1/4;
+    ctx.lineWidth = inner_radius/2;
+    draw_player_glyph(ctx, this.occupant,
+                      this.x + this.width/2, this.y + this.height/2, inner_radius);
 }
 
 cell.prototype.contains = function(x, y) {
@@ -114,22 +149,19 @@ var board = function(x, y, width, height) {
 
 board.prototype.draw_winner = function(ctx) {
 
-    /* No point in doing calculations for no reason */
-    if (this.winner == null) { return; }
-
-    var center_x = this.x + this.width/2;
-    var center_y = this.y + this.height/2;
-
-    var overlay_radius = center_x > center_y ? this.width*2/5 : this.height*2/5;
-    var inner_radius = overlay_radius*2/5;
-
     var color = null;
-
-    if (this.winner == "x") {
+    if (this.winner == null) { return; }
+    else if (this.winner == "x") {
         color = k_x_fill_color;
     } else if (this.winner == "o") {
         color = k_o_fill_color;
     }
+
+    var center_x = this.x + this.width/2;
+    var center_y = this.y + this.height/2;
+
+    var overlay_radius = this.height > this.width ? this.width*2/5 : this.height*2/5;
+    var inner_radius = overlay_radius*2/5;
 
     ctx.save();
     ctx.beginPath();
@@ -153,18 +185,7 @@ board.prototype.draw_winner = function(ctx) {
     ctx.arc(center_x, center_y, overlay_radius+3, 0, Math.PI * 2, false);
     ctx.stroke();
 
-    ctx.beginPath();
-    if (this.winner == "o") {
-        ctx.arc(center_x, center_y, inner_radius, 0, Math.PI * 2, false);
-    } else if (this.winner == "x") {
-        /* Draw the X */
-        ctx.moveTo(center_x - inner_radius, center_y - inner_radius);
-        ctx.lineTo(center_x + inner_radius, center_y + inner_radius);
-        ctx.moveTo(center_x - inner_radius, center_y + inner_radius);
-        ctx.lineTo(center_x + inner_radius, center_y - inner_radius);
-
-    }
-    ctx.stroke();
+    draw_player_glyph(ctx, this.winner, center_x, center_y, inner_radius);
     ctx.restore();
 }
 
