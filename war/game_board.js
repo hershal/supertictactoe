@@ -1,3 +1,12 @@
+k_o_fill_color = "#ff9800";
+k_x_fill_color = "#2196f3";
+k_null_fill_color = "#ffffff";
+
+k_hover_alpha = 0.1;
+k_fill_alpha = 0.5;
+
+k_win_alpha = 0.85;
+
 /* The top left is the "x,y" reference corner */
 var cell = function(x, y, width, height) {
 
@@ -24,7 +33,7 @@ cell.prototype.stroke_box = function(ctx) {
 
     ctx.beginPath();
     ctx.globalAlpha = 1.0;
-    ctx.strokeStyle="#e0e0e0";
+    ctx.strokeStyle = "#e0e0e0";
     ctx.lineWidth = 1;
     ctx.rect(this.x, this.y, this.width, this.height);
     ctx.stroke();
@@ -34,19 +43,12 @@ cell.prototype._fill_bg = function(ctx, color, alpha) {
 
     ctx.beginPath();
     ctx.globalAlpha = alpha;
-    ctx.fillStyle=color;
+    ctx.fillStyle = color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
     ctx.fill();
 }
 
 cell.prototype.fill_box = function(ctx) {
-
-    var k_o_fill_color = "#ff9800";
-    var k_x_fill_color = "#2196f3";
-    var k_null_fill_color = "#ffffff";
-
-    var k_hover_alpha = 0.1;
-    var k_fill_alpha = 0.5;
 
     if (this.occupant == "o") {
         this._fill_bg(ctx, k_o_fill_color, k_fill_alpha);
