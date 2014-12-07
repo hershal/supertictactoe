@@ -93,7 +93,7 @@
                     <div class="col-md-9">
                         <div class="panel panel-primary">
                             <div class="panel-body">
-                                <canvas id="game_board_canvas" width="476" height="476">
+                                <canvas id="game_board_canvas" width="800" height="600">
                                     Canvas Tag not supported
                                 </canvas>
 
@@ -170,21 +170,22 @@
          var canvas = document.getElementById("game_board_canvas");
          var ctx = canvas.getContext("2d");
 
-         var c1 = new cell(20, 20, 20, 20);
+         var c1 = new cell(10, 10, 20, 20);
          c1.draw(ctx);
 
-         var c2 = new cell(20, 100, 20, 20);
+         var c2 = new cell(10, 50, 20, 20);
          c2.set_occupant("x");
          c2.draw(ctx);
 
-         var c3 = new cell(20, 200, 20, 20);
+         var c3 = new cell(10, 110, 20, 20);
          c3.set_occupant("o");
          c3.draw(ctx);
 
-         var b1 = new board(50, 50, 100, 100);
+         var b1 = new board(10, 150, 100, 100);
          b1.draw(ctx);
 
-         var sb1 = new superboard(160, 160, 300, 300);
+         var sb1 = new superboard(160, 10, 500, 400);
+         sb1.draw(ctx);
 
          game_ref.on('child_added', function(snapshot) {
              var pkg = snapshot.val();
