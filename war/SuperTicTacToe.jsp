@@ -167,24 +167,50 @@
         <script>
          var game_ref = init_session_id();
          var canvas = document.getElementById("game_board_canvas");
-         /* var ctx = canvas.getContext("2d"); */
+         var ctx = canvas.getContext("2d");
 
          var c1 = new cell(20, 20, 20, 20);
-         c1.draw(canvas);
+         c1.draw(ctx);
 
          var c2 = new cell(20, 100, 20, 20);
          c2.set_occupant("x");
-         c2.draw(canvas);
+         c2.draw(ctx);
 
          var c3 = new cell(20, 200, 20, 20);
          c3.set_occupant("o");
-         c3.draw(canvas);
+         c3.draw(ctx);
 
          var b1 = new board(50, 50, 100, 100);
-         b1.draw(canvas);
+         b1.draw(ctx);
 
          var sb1 = new superboard(160, 160, 300, 300);
-         sb1.draw(canvas);
+         sb1.draw(ctx);
+
+         var oldCellAt = null;
+         canvas.addEventListener('mousemove', function(evt) {
+             var pos = getMousePos(canvas, evt);
+
+             if (oldCellAt != null) {
+                 oldCellAt.set_hover(false);
+             }
+
+             var cellAt = sb1.getCellAt(pos.x, pos.y);
+             if (cellAt != null) {
+                 cellAt.set_hover(true);
+             }
+             oldCellAt = cellAt;
+             sb1.draw(ctx);
+         }, false);
+
+         canvas.addEventListener('mousedown', function(evt) {
+             var pos = getMousePos(canvas, evt);
+             var cellAt = sb1.getCellAt(pos.x, pos.y);
+             if (cellAt != null) {
+                 cellAt.set_occupant("x");
+             }
+             sb1.draw(ctx);
+         }, false);
+
 
         </script>
     </body>
