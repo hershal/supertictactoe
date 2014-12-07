@@ -110,7 +110,7 @@ var board = function(x, y, width, height) {
             /* this.cells[i][j] = */
             /*     new cell(i*x, j*y, width_delta, height_delta); */
             this.cells[i*this.rows + j] =
-                new cell(i*width_delta + this.x, j*height_delta + this.y,
+                new cell(j*width_delta + this.x, i*height_delta + this.y,
                          width_delta, height_delta);
         }
     }
