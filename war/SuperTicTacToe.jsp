@@ -191,12 +191,12 @@
              var pos = getMousePos(canvas, evt);
 
              if (oldCellAt != null) {
-                 oldCellAt.set_hover(false);
+                 oldCellAt.val.set_hover(false);
              }
 
              var cellAt = sb1.getCellAt(pos.x, pos.y);
              if (cellAt != null) {
-                 cellAt.set_hover(true);
+                 cellAt.val.set_hover(true);
              }
              oldCellAt = cellAt;
              sb1.draw(ctx);
@@ -206,9 +206,10 @@
              var pos = getMousePos(canvas, evt);
              var cellAt = sb1.getCellAt(pos.x, pos.y);
              if (cellAt != null) {
-                 cellAt.set_occupant("x");
+                 cellAt.val.set_occupant("x");
              }
              sb1.draw(ctx);
+             alert("outer: " + cellAt.id_outer + ", inner: " + cellAt.id_inner);
          }, false);
 
 

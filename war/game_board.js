@@ -139,7 +139,8 @@ board.prototype.getCellAt = function(x,y) {
     for (var i=0; i<this.rows; ++i) {
         for (var j=0; j<this.cols; ++j) {
             if (this.cells[i*this.rows + j].contains(x,y)) {
-                return this.cells[i*this.rows + j];
+                return {id: i*this.rows + j,
+                        val: this.cells[i*this.rows + j]};
             }
         }
     }
@@ -196,9 +197,11 @@ superboard.prototype.getCellAt = function(x,y) {
 
     for (var i=0; i<this.rows; ++i) {
         for (var j=0; j<this.cols; ++j) {
-            var cellAt = this.boards[i*this.rows + j].getCellAt(x,y);
+            var cellAt = this.boards[i*this.cols + j].getCellAt(x,y);
             if (cellAt != null) {
-                return cellAt;
+                return {id_outer: i*this.rows + j,
+                        id_inner: cellAt.id,
+                        val: cellAt.val};
             }
         }
     }
