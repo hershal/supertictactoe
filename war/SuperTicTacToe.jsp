@@ -34,10 +34,19 @@
 
         <!-- Timeago JQuery plugin -->
         <!-- <script src="http://timeago.yarp.com/jquery.timeago.js"></script> -->
+
+        <!-- Helper functions -->
+        <script src="/helper.js"></script>
+
+        <!-- Game board functions -->
+        <script src="/game_board.js"></script>
+
+        <!-- The Firebase data store -->
+        <script src='https://cdn.firebase.com/js/client/1.1.1/firebase.js'></script>
+
     </head>
 
     <body>
-
         <!-- Navbar -->
         <br />
         <div class="container">
@@ -84,9 +93,9 @@
                     <div class="col-md-9">
                         <div class="panel panel-primary">
                             <div class="panel-body">
-  	                        <canvas id="canvas_1" width="476" height="476">
-			            Canvas Tag not supported
-		                </canvas>
+                                <canvas id="game_board_canvas" width="476" height="476">
+                                    Canvas Tag not supported
+                                </canvas>
 
                             </div>
                         </div>
@@ -143,7 +152,7 @@
                 </div> -->
                 </div>
 
-            
+
             <footer>
                 <div class="row">
                     <div class="col-lg-12 text-center">
@@ -152,5 +161,31 @@
                 </div>
             </footer>
         </div>
+
+
+        <!-- Don't put too much here!! -->
+        <script>
+         var game_ref = init_session_id();
+         var canvas = document.getElementById("game_board_canvas");
+         /* var ctx = canvas.getContext("2d"); */
+
+         var c1 = new cell(20, 20, 20, 20);
+         c1.draw(canvas);
+
+         var c2 = new cell(20, 100, 20, 20);
+         c2.set_occupant("x");
+         c2.draw(canvas);
+
+         var c3 = new cell(20, 200, 20, 20);
+         c3.set_occupant("o");
+         c3.draw(canvas);
+
+         var b1 = new board(50, 50, 100, 100);
+         b1.draw(canvas);
+
+         var sb1 = new superboard(160, 160, 300, 300);
+         sb1.draw(canvas);
+
+        </script>
     </body>
 </html>
