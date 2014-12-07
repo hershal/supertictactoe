@@ -166,6 +166,7 @@
         <!-- Don't put too much here!! -->
         <script>
          var game_ref = init_session_id();
+
          var canvas = document.getElementById("game_board_canvas");
          var ctx = canvas.getContext("2d");
 
@@ -184,7 +185,14 @@
          b1.draw(ctx);
 
          var sb1 = new superboard(160, 160, 300, 300);
-         sb1.draw(ctx);
+
+         game_ref.on('child_added', function(snapshot) {
+             var pkg = snapshot.val();
+             if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
+                 sb1.getCell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
+                 sb1.draw(ctx);
+             }
+         });
 
          var oldCellAt = null;
          canvas.addEventListener('mousemove', function(evt) {

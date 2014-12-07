@@ -147,6 +147,13 @@ board.prototype.getCellAt = function(x,y) {
     return null;
 }
 
+board.prototype.getCell = function(id) {
+    if (id < (this.rows*this.cols)) {
+        return this.cells[id];
+    }
+    return null;
+}
+
 var superboard = function(x, y, width, height) {
 
     this.x = x;
@@ -205,6 +212,14 @@ superboard.prototype.getCellAt = function(x,y) {
             }
         }
     }
+}
+
+superboard.prototype.getCell = function(id_outer, id_inner) {
+
+    if (id_outer < (this.rows*this.cols)) {
+        return this.boards[id_outer].getCell(id_inner);
+    }
+    return null;
 }
 
 function getMousePos(cnv, evt) {
