@@ -221,7 +221,6 @@
              var cellAt = sb1.getCellAt(pos.x, pos.y);
              if (cellAt != null) {
                  /* cellAt.val.set_occupant("x"); */
-                 alert("outer: " + cellAt.id_outer + ", inner: " + cellAt.id_inner);
                  check_valid_move(game_ref.toString(), "x", cellAt.id_outer, cellAt.id_inner);
              }
              sb1.draw(ctx);
