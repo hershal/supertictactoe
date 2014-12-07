@@ -32,8 +32,6 @@ cell.prototype.stroke_box = function(ctx) {
 
 cell.prototype._fill_bg = function(ctx, color, alpha) {
 
-    var ctx = canvas.getContext("2d");
-
     ctx.beginPath();
     ctx.globalAlpha = alpha;
     ctx.fillStyle=color;
@@ -42,8 +40,6 @@ cell.prototype._fill_bg = function(ctx, color, alpha) {
 }
 
 cell.prototype.fill_box = function(ctx) {
-
-    var ctx = canvas.getContext("2d");
 
     var k_o_fill_color = "#ff9800";
     var k_x_fill_color = "#2196f3";
@@ -67,13 +63,10 @@ cell.prototype.fill_box = function(ctx) {
 
 cell.prototype.clear = function(ctx) {
 
-    var ctx = canvas.getContext("2d");
     ctx.clearRect(this.x, this.y, this.width, this.height);
 }
 
 cell.prototype.draw = function(ctx) {
-
-    var ctx = canvas.getContext("2d");
 
     this.clear(ctx);
     this.fill_box(ctx);
@@ -116,8 +109,6 @@ var board = function(x, y, width, height) {
 }
 
 board.prototype.draw = function(ctx) {
-
-    var ctx = canvas.getContext("2d");
 
     ctx.beginPath();
     ctx.globalAlpha = 1.0;
