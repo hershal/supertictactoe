@@ -94,6 +94,8 @@ var board = function(x, y, width, height) {
     this.rows = 3;
     this.cols = 3;
 
+    this.winner = null;
+
     this.cells = {};
 
     var width_delta = this.width/this.cols;
@@ -108,6 +110,62 @@ var board = function(x, y, width, height) {
                          width_delta, height_delta);
         }
     }
+}
+
+board.prototype.draw_winner = function(ctx) {
+
+    /* No point in doing calculations for no reason */
+    if (this.winner == null) { return; }
+
+    var center_x = this.x + this.width/2;
+    var center_y = this.y + this.height/2;
+
+    var overlay_radius = center_x > center_y ? this.width*2/5 : this.height*2/5;
+    var inner_radius = overlay_radius*2/5;
+
+    var color = null;
+
+    if (this.winner == "x") {
+        color = k_x_fill_color;
+    } else if (this.winner == "o") {
+        color = k_o_fill_color;
+    }
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.globalAlpha = k_win_alpha;
+    ctx.fillStyle = color;
+    ctx.arc(center_x, center_y, overlay_radius, 0, Math.PI * 2, false);
+    /* ctx.closePath(); */
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(center_x, center_y, overlay_radius, 0, Math.PI * 2, false);
+    ctx.clip();
+
+    ctx.beginPath();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 5;
+    ctx.shadowBlur = 30;
+    ctx.shadowColor = 'white';
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.arc(center_x, center_y, overlay_radius+3, 0, Math.PI * 2, false);
+    ctx.stroke();
+
+    ctx.beginPath();
+    if (this.winner == "o") {
+        ctx.arc(center_x, center_y, inner_radius, 0, Math.PI * 2, false);
+    } else if (this.winner == "x") {
+        /* Draw the X */
+        ctx.moveTo(center_x - inner_radius, center_y - inner_radius);
+        ctx.lineTo(center_x + inner_radius, center_y + inner_radius);
+        ctx.moveTo(center_x - inner_radius, center_y + inner_radius);
+        ctx.lineTo(center_x + inner_radius, center_y - inner_radius);
+
+    }
+    ctx.stroke();
+    ctx.restore();
 }
 
 board.prototype.draw = function(ctx) {
@@ -125,6 +183,8 @@ board.prototype.draw = function(ctx) {
             this.cells[i * this.rows + j].draw(ctx);
         }
     }
+
+    this.draw_winner(ctx);
 }
 
 board.prototype.getCellAt = function(x,y) {
