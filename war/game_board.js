@@ -47,22 +47,21 @@ cell.prototype.fill_box = function(ctx) {
 
     var k_o_fill_color = "#ff9800";
     var k_x_fill_color = "#2196f3";
+    var k_null_fill_color = "#ffffff";
 
-    var k_hover_alpha = 0.2;
-    var k_fill_alpha = 1.0;
+    var k_hover_alpha = 0.1;
+    var k_fill_alpha = 0.5;
 
     if (this.occupant == "o") {
         this._fill_bg(ctx, k_o_fill_color, k_fill_alpha);
     } else if (this.occupant == "x") {
         this._fill_bg(ctx, k_x_fill_color, k_fill_alpha);
-    } else if (this.occupant == null) {
+    } else {
         if (this.hover) {
             this._fill_bg(ctx, k_x_fill_color, k_hover_alpha);
         } else {
-            this._fill_bg(ctx, "#ffffff", 1.0);
+            this._fill_bg(ctx, k_null_fill_color, 1.0);
         }
-    } else {
-        this._fill_bg(ctx, "#000000", 1.0);
     }
 }
 
