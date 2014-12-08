@@ -1,5 +1,7 @@
 package com.supertictactoe.supertictactoe;
 
+import static com.supertictactoe.Common.SuperTicTacToeStrings.*;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,6 +21,11 @@ import org.codehaus.jackson.map.JsonMappingException;
 
 import com.ibm.icu.util.BytesTrie.Iterator;
 
+import com.supertictactoe.supertictactoe.components.*;
+
+import static com.supertictactoe.Common.StoredProcedure.*;
+import static com.supertictactoe.Common.SuperTicTacToeStrings.*;
+
 public class PlayerMoveServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -36,15 +43,21 @@ public class PlayerMoveServlet extends HttpServlet {
         final String id_outer_str = request.getParameter("id_outer");
         final String id_inner_str = request.getParameter("id_inner");
 
-        if ((player == null) || (id_outer_str == null) || (id_inner_str == null)) {
-            /* DO SOMETHING HERE */
-            return;
-        }
+        Move move = null;
 
+        if ((game_url == null) || (player == null) ||
+            (id_outer_str == null) || (id_inner_str == null)) {
+
+            return;
+        } 
         int id_outer = Integer.parseInt(id_outer_str);
         int id_inner = Integer.parseInt(id_inner_str);
 
-        System.out.println(game_url + " " + player + " " + id_outer + " " + id_inner);
+        id_outer = Integer.parseInt(id_outer_str);
+        id_inner = Integer.parseInt(id_inner_str);
+        move = new Move(id_outer, id_inner, SPBuildContender(player).getTeam());
+
+        System.out.println(game_url + " " + move.toString());
 
         /* create the firebase reference */
         try {
@@ -52,31 +65,13 @@ public class PlayerMoveServlet extends HttpServlet {
 
             FirebaseResponse firebaseResponse = firebase.get();
 
-            System.out.println(firebaseResponse);
+            Game gm = SPParseFirebase(firebaseResponse);
 
-            Set<Entry<String, Object>> firebaseResponseBody = firebaseResponse.getBody().entrySet();
-
-            java.util.Iterator<Entry<String, Object>> interMoveIter
-                = firebaseResponse.getBody().entrySet().iterator();
-
-            while(interMoveIter.hasNext()) {
-                Map.Entry interMovePair = (Map.Entry)interMoveIter.next();
-
-                System.out.println("inter: " + interMovePair.getKey());
-
-                if (interMovePair.getValue() instanceof String) {
-                    System.out.println("string: " + interMovePair.getValue());
-                } else {
-                    java.util.Iterator<Entry<String, Object>> intraMoveIter
-                        = ((Map<String, Object>) interMovePair.getValue()).entrySet().iterator();
-                    while(intraMoveIter.hasNext()) {
-                        Map.Entry intraMovePair = (Map.Entry)intraMoveIter.next();
-                        System.out.println(intraMovePair.getKey() + " = " + intraMovePair.getValue());
-                        /* TODO: */
-                        /* Need to create a package to take a Map of the
-                         * entries in and generate the board state */
-                    }
-                }
+            if (gm.play(move)) {
+                System.out.println("VALID MOVE PLAYED!");
+            } else {
+                System.out.println("INVALID MOVE IGNORED!");
+                /* Send response that move is not valid */
             }
 
         } catch (FirebaseException e) {
