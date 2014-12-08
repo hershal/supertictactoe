@@ -6,11 +6,7 @@ function play_move(game_url, player, id_outer, id_inner) {
               if (js.success == "true") {
                   var old_self_player = self_player;
                   if (document.getElementById("opponentRadioSelf").checked) {
-                      if (self_player === "x") {
-                          self_player = "o";
-                      } else {
-                          self_player = "x";
-                      }
+
                   }
               }
           }

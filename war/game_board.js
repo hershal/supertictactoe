@@ -6,6 +6,7 @@ k_null_fill_color = "#ffffff";
 k_hover_alpha = 0.1;
 k_fill_alpha = 1.0
 k_win_alpha = 0.85;
+k_win_bg_alpha = 0.75;
 k_null_alpha = 1.0;
 k_highlight_alpha = 0.1;
 
@@ -177,15 +178,21 @@ var board = function(x, y, width, height) {
     }
 }
 
+board.prototype.set_winner = function(winner) {
+
+    this.winner = winner;
+}
+
 board.prototype.draw_winner = function(ctx) {
 
-    var color = null;
     if (this.winner == null) { return; }
-    else if (this.winner == "x") {
-        color = k_x_fill_color;
-    } else if (this.winner == "o") {
-        color = k_o_fill_color;
-    }
+    var color = get_color_for_player(this.winner);
+
+    /* for (var i=0; i<this.rows; ++i) { */
+    /*     for (var j=0; j<this.cols; ++j) { */
+    /*         this.cells[i*this.rows + j]._fill_bg(ctx, color, k_win_bg_alpha); */
+    /*     } */
+    /* } */
 
     var center_x = this.x + this.width/2;
     var center_y = this.y + this.height/2;

@@ -176,7 +176,7 @@
          var game_state = game_ref.child("state");
 
          /* CHANGE THIS */
-         var self_player = "x";
+         /* var self_player = "x"; */
          /* END CHANGE THIS */
 
          var canvas = document.getElementById("game_board_canvas");
@@ -209,13 +209,23 @@
 
          game_state.on('value', function(snapshot) {
              var pkg = snapshot.val();
-             var player_highlight = pkg.current_player;
+             var player_highlight = (snapshot.child("current_player").val() || "x");
+             self_player = player_highlight;
+             console.log(self_player);
+
              var game_state_boards_avail = game_state.child("boards_avail");
+             var game_state_boards_won = game_state.child("boards_won");
              sb1.reset_highlights();
+
+             game_state_boards_won.on("value", function(snap) {
+                 snap.forEach(function(ss) {
+                     sb1.boards[ss.name()].set_winner(ss.val());
+                 });
+             });
              game_state_boards_avail.once("value", function(snap) {
                  snap.forEach(function(ss) {
                      sb1.highlight_board(ss.val(), player_highlight);
-                     alert(ss.val());
+                     /* alert(ss.val()); */
                  });
              });
              sb1.draw(ctx);
