@@ -14,7 +14,9 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 
 import net.thegreshams.firebase4j.model.FirebaseResponse;
+import net.thegreshams.firebase4j.service.Firebase;
 import net.thegreshams.firebase4j.error.FirebaseException;
+import net.thegreshams.firebase4j.error.JacksonUtilityException;
 
 import com.supertictactoe.supertictactoe.components.*;
 import com.supertictactoe.supertictactoe.components.Contender.Side;
@@ -30,11 +32,13 @@ public class StoredProcedure {
 
     /* This guy is ugly and unruly, but a necessary evil, and the
      * critial path as well */
-    public static Game SPParseFirebase (FirebaseResponse fb)
+    public static Game SPParseFirebase (Firebase fb)
         throws FirebaseException {
 
-        if (fb.getBody() == null) {
-            throw new FirebaseException("Null Data Returned: " + fb.getRawBody());
+        FirebaseResponse firebaseResponse = fb.get();
+
+        if (firebaseResponse.getBody() == null) {
+            throw new FirebaseException("Null Data Returned: " + firebaseResponse.getRawBody());
         }
 
         /* Init game baord */
@@ -46,10 +50,10 @@ public class StoredProcedure {
 
         /* Start parsing the firebase response body */
         Set<Entry<String, Object>> firebaseResponseBody
-            = fb.getBody().entrySet();
+            = firebaseResponse.getBody().entrySet();
 
         Iterator<Entry<String, Object>> interMoveIter
-            = fb.getBody().entrySet().iterator();
+            = firebaseResponse.getBody().entrySet().iterator();
 
 
         while (interMoveIter.hasNext()) {
@@ -102,7 +106,7 @@ public class StoredProcedure {
                             } else if (movePair.getKey().equals(kGameMovesPlayer)) {
                                 player = (String) movePair.getValue();
                             } else if (movePair.getKey().equals(kGameMovesTimestamp)) {
-                            	try {
+                                try {
                                     timestamp = df.parse((String) movePair.getValue());
                                 } catch (ParseException e) {
                                     /* This is not an exceptional condition, why make a try/catch?
@@ -151,5 +155,32 @@ public class StoredProcedure {
         }
 
         return null;
+    }
+
+    public static boolean SPPushFirebase(Firebase fb, Move move) {
+        DateFormat df = new SimpleDateFormat(kTimestampFormat);
+        Map<String, Object> data = new LinkedHashMap<String, Object>();
+        data.put(kGameMovesIDOuter, move.getBoard());
+        data.put(kGameMovesIDInner, move.getCell());
+
+        final Side s = move.getSide();
+        if (s == Side.X) { data.put(kGameMovesPlayer, kGamePlayerX); }
+        else if (s == Side.O) { data.put(kGameMovesPlayer, kGamePlayerX); }
+        else { return false; }
+
+        data.put(kGameMovesTimestamp, df.format(new Date()));
+
+        FirebaseResponse resp = null;
+		try {
+                    resp = fb.post("moves", data);
+		} catch (JacksonUtilityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FirebaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        return resp==null ? resp.getSuccess() : false;
     }
 }

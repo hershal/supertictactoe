@@ -63,12 +63,11 @@ public class PlayerMoveServlet extends HttpServlet {
         try {
             Firebase firebase = new Firebase(game_url);
 
-            FirebaseResponse firebaseResponse = firebase.get();
-
-            Game gm = SPParseFirebase(firebaseResponse);
+            Game gm = SPParseFirebase(firebase);
 
             if (gm.play(move)) {
                 System.out.println("VALID MOVE PLAYED!");
+                SPPushFirebase(firebase, move);
             } else {
                 System.out.println("INVALID MOVE IGNORED!");
                 /* Send response that move is not valid */
