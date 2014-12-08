@@ -117,13 +117,13 @@
                                     </div><br/>
                                     <div class="col-lg-10">
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="opponentRadioHuman" value="Human">Human</label>
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioHuman" value="Human" checked="">Human</label>
                                         </div>
                                         <div class="radio">
                                             <label><input type="radio" name="opponentRadios" id="oponentRadioAI" value="AI">AI</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" checked="">Self</label>
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self">Self</label>
                                         </div>
                                     </div>
                                 </div>
@@ -174,10 +174,36 @@
          var game_ref = init_session_id();
          var game_moves = game_ref.child("moves");
          var game_state = game_ref.child("state");
+         var game_seat = game_ref.child("seats");
+         var game_seat_self = null;
 
-         /* CHANGE THIS */
-         /* var self_player = "x"; */
-         /* END CHANGE THIS */
+         /* Spectator is null */
+         var player_highlight;
+         var self_player = null;
+
+         game_seat.once('value', function(snapshot) {
+             var player_x = null;
+             var player_o = null;
+             snapshot.forEach(function(snap) {
+                 player_x = player_x || snap.val().x;
+                 player_o = player_o || snap.val().o;
+             });
+
+             if (player_x == null) {
+                 self_player = "x";
+                 game_seat_self = game_seat.push({x: "x"});
+                 game_seat_self.onDisconnect().remove();
+                 alert("PLACEHOLDER:\nplayer is x");
+             } else if (player_o == null) {
+                 self_player = "o";
+                 game_seat_self = game_seat.push({o: "o"});
+                 game_seat_self.onDisconnect().remove();
+                 alert("PLACEHOLDER:\nplayer is o\n");
+             } else {
+                 alert("PLACEHOLDER:\nyou are spectating");
+             }
+         });
+
 
          var canvas = document.getElementById("game_board_canvas");
          var ctx = canvas.getContext("2d");
@@ -209,8 +235,12 @@
 
          game_state.on('value', function(snapshot) {
              var pkg = snapshot.val();
-             var player_highlight = (snapshot.child("current_player").val() || "x");
-             self_player = player_highlight;
+             player_highlight = (snapshot.child("current_player").val() || "x");
+
+             if (document.getElementById("opponentRadioSelf").checked) {
+                 self_player = player_highlight;
+             }
+
              console.log(self_player);
 
              var game_state_boards_avail = game_state.child("boards_avail");
@@ -225,7 +255,6 @@
              game_state_boards_avail.once("value", function(snap) {
                  snap.forEach(function(ss) {
                      sb1.highlight_board(ss.val(), player_highlight);
-                     /* alert(ss.val()); */
                  });
              });
              sb1.draw(ctx);
@@ -248,6 +277,10 @@
          }, false);
 
          canvas.addEventListener('mousedown', function(evt) {
+             if (self_player != player_highlight) {
+                 alert("PLACEHOLDER:\nIt's not your turn.\ncurrent_player: " + player_highlight + " you: " + self_player);
+                 return;
+             }
              var pos = getMousePos(canvas, evt);
              var cellAt = sb1.getCellAt(pos.x, pos.y);
              if (cellAt != null) {
