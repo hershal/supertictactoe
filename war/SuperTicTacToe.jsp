@@ -117,10 +117,13 @@
                                     </div><br/>
                                     <div class="col-lg-10">
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="opponentRadioHuman" value="Human" checked="">Human</label>
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioHuman" value="Human">Human</label>
                                         </div>
                                         <div class="radio">
                                             <label><input type="radio" name="opponentRadios" id="oponentRadioAI" value="AI">AI</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" checked="">Self</label>
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +156,7 @@
                 <p>SuperTicTacToe is played...</p>
                 </div>
                 </div> -->
-                </div>
+            </div>
 
 
             <footer>
@@ -171,6 +174,10 @@
          var game_ref = init_session_id();
          var game_moves = game_ref.child("moves");
          var game_state = game_ref.child("state");
+
+         /* CHANGE THIS */
+         var self_player = "x";
+         /* END CHANGE THIS */
 
          var canvas = document.getElementById("game_board_canvas");
          var ctx = canvas.getContext("2d");
@@ -220,8 +227,8 @@
              var pos = getMousePos(canvas, evt);
              var cellAt = sb1.getCellAt(pos.x, pos.y);
              if (cellAt != null) {
-                 /* cellAt.val.set_occupant("x"); */
-                 check_valid_move(game_ref.toString(), "x", cellAt.id_outer, cellAt.id_inner);
+                 play_move(game_ref.toString(), self_player,
+                           cellAt.id_outer, cellAt.id_inner);
              }
              sb1.draw(ctx);
          }, false);

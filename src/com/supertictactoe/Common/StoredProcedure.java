@@ -148,6 +148,7 @@ public class StoredProcedure {
     }
 
     public static Contender SPBuildContender(String contender) {
+
         if (contender.equals(kGamePlayerX)) {
             return new Contender(Side.X);
         } else if (contender.equals(kGamePlayerO)) {
@@ -165,21 +166,21 @@ public class StoredProcedure {
 
         final Side s = move.getSide();
         if (s == Side.X) { data.put(kGameMovesPlayer, kGamePlayerX); }
-        else if (s == Side.O) { data.put(kGameMovesPlayer, kGamePlayerX); }
+        else if (s == Side.O) { data.put(kGameMovesPlayer, kGamePlayerO); }
         else { return false; }
 
         data.put(kGameMovesTimestamp, df.format(new Date()));
 
         FirebaseResponse resp = null;
-		try {
+                try {
                     resp = fb.post("moves", data);
-		} catch (JacksonUtilityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FirebaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+                } catch (JacksonUtilityException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (FirebaseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
         return resp==null ? resp.getSuccess() : false;
     }

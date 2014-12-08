@@ -19,8 +19,9 @@ import net.thegreshams.firebase4j.service.Firebase;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.google.appengine.labs.repackaged.org.json.JSONObject;
 import com.ibm.icu.util.BytesTrie.Iterator;
-
 import com.supertictactoe.supertictactoe.components.*;
 
 import static com.supertictactoe.Common.StoredProcedure.*;
@@ -49,7 +50,7 @@ public class PlayerMoveServlet extends HttpServlet {
             (id_outer_str == null) || (id_inner_str == null)) {
 
             return;
-        } 
+        }
         int id_outer = Integer.parseInt(id_outer_str);
         int id_inner = Integer.parseInt(id_inner_str);
 
@@ -61,6 +62,7 @@ public class PlayerMoveServlet extends HttpServlet {
 
         /* create the firebase reference */
         try {
+            JSONObject json = new JSONObject();
             Firebase firebase = new Firebase(game_url);
 
             Game gm = SPParseFirebase(firebase);
@@ -68,13 +70,19 @@ public class PlayerMoveServlet extends HttpServlet {
             if (gm.play(move)) {
                 System.out.println("VALID MOVE PLAYED!");
                 SPPushFirebase(firebase, move);
+                json.append("success", "true");
             } else {
                 System.out.println("INVALID MOVE IGNORED!");
+                json.append("success", "false");
                 /* Send response that move is not valid */
             }
-
+            json.write(response.getWriter());
         } catch (FirebaseException e) {
             /* STUB */
+            e.printStackTrace();
+        } catch (JSONException e) {
+            // This is stupid; adding to a JSON object is NOT exceptional!
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
