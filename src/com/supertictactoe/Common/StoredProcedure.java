@@ -1,13 +1,12 @@
 package com.supertictactoe.Common;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Iterator;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,7 +42,7 @@ public class StoredProcedure {
 
         /* Init game baord */
         Game gm = new Game(kNumGameBoards);
-        Map<Date, Move> move_map = new HashMap<Date, Move>();
+        TreeMap<Date, Move> move_map = new TreeMap<Date, Move>();
 
         ParseState state = ParseState.kNull;
         int states_completed = 0;
@@ -126,7 +125,9 @@ public class StoredProcedure {
 
                         /* System.out.println("PLAYER: " + player + ", ID_OUTER: " + id_outer + ", ID_INNER: " + id_inner); */
                     } else if (state == ParseState.kStateParse) {
-                        /* DO SOMETHING */
+
+                        /* Do I actually need to read in state here? I
+                         * only need to write it... */
                     }
                 }
             }
@@ -158,29 +159,89 @@ public class StoredProcedure {
         return null;
     }
 
-    public static boolean SPPushFirebase(Firebase fb, Move move) {
+    public static String SPStringifySide(Side s) {
+
+        if (s == Side.X) {
+            return kGamePlayerX;
+        } else if (s == Side.O) {
+            return kGamePlayerO;
+        }
+
+        return null;
+    }
+
+    public static Side SPGetOpposingSide(Side s) {
+
+        if (s == Side.X) {
+            return Side.O;
+        } else if (s == Side.O) {
+            return Side.X;
+        }
+
+        return null;
+    }
+
+    public static boolean SPPushMove(Firebase fb, Move move) {
+
         DateFormat df = new SimpleDateFormat(kTimestampFormat);
         Map<String, Object> data = new LinkedHashMap<String, Object>();
-        data.put(kGameMovesIDOuter, move.getBoard());
-        data.put(kGameMovesIDInner, move.getCell());
+        String player = SPStringifySide(move.getSide());
 
-        final Side s = move.getSide();
-        if (s == Side.X) { data.put(kGameMovesPlayer, kGamePlayerX); }
-        else if (s == Side.O) { data.put(kGameMovesPlayer, kGamePlayerO); }
+        if (player != null) { data.put(kGameMovesPlayer, player); }
         else { return false; }
 
+        data.put(kGameMovesIDOuter, move.getBoard());
+        data.put(kGameMovesIDInner, move.getCell());
         data.put(kGameMovesTimestamp, df.format(new Date()));
 
         FirebaseResponse resp = null;
-                try {
-                    resp = fb.post("moves", data);
-                } catch (JacksonUtilityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (FirebaseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+        try {
+            resp = fb.post("moves", data);
+        } catch (JacksonUtilityException e) {
+            e.printStackTrace();
+        } catch (FirebaseException e) {
+            e.printStackTrace();
+        }
+
+        return resp==null ? resp.getSuccess() : false;
+    }
+
+    public static boolean SPUpdateState(Firebase fb, Game game, Move move) {
+
+        Map<String, Object> data = new LinkedHashMap<String, Object>();
+        String player = SPStringifySide(SPGetOpposingSide(move.getSide()));
+
+        if (player != null) { data.put(kGameStateCurrentPlayer, player); }
+        else { return false; }
+
+        Map<String, Object> boards_won = new LinkedHashMap<String, Object>();
+        for (int i=0; i<game.boards.size(); ++i) {
+            if (game.boards.get(i).isWon()) {
+                Side owner = game.boards.get(i).getOwner();
+                if (owner != null) {
+                    boards_won.put(""+i, SPStringifySide(owner));
                 }
+            }
+        }
+
+        Map<String, Object> boards_avail = new LinkedHashMap<String, Object>();
+        int j=0;
+        for (Integer i : game.validBoards()) {
+            boards_avail.put(""+j, ""+i);
+            System.out.println("AVAIL BOARD: " + i);
+        }
+
+        data.put(kGameStateBoardsWon, boards_won);
+        data.put(kGameStateBoardsAvail, boards_avail);
+
+        FirebaseResponse resp = null;
+        try {
+            resp = fb.put("state", data);
+        } catch (JacksonUtilityException e) {
+            e.printStackTrace();
+        } catch (FirebaseException e) {
+            e.printStackTrace();
+        }
 
         return resp==null ? resp.getSuccess() : false;
     }

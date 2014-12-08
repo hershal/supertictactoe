@@ -207,6 +207,20 @@
              }
          });
 
+         game_state.on('value', function(snapshot) {
+             var pkg = snapshot.val();
+             var player_highlight = pkg.current_player;
+             var game_state_boards_avail = game_state.child("boards_avail");
+             sb1.reset_highlights();
+             game_state_boards_avail.once("value", function(snap) {
+                 snap.forEach(function(ss) {
+                     sb1.highlight_board(ss.val(), player_highlight);
+                     alert(ss.val());
+                 });
+             });
+             sb1.draw(ctx);
+         });
+
          var oldCellAt = null;
          canvas.addEventListener('mousemove', function(evt) {
              var pos = getMousePos(canvas, evt);

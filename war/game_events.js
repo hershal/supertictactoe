@@ -12,7 +12,6 @@ function play_move(game_url, player, id_outer, id_inner) {
                           self_player = "x";
                       }
                   }
-                  alert("player changed: " + old_self_player + " -> " + self_player);
               }
           }
          );

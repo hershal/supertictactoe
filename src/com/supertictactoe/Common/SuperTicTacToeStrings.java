@@ -6,15 +6,16 @@ public final class SuperTicTacToeStrings {
     public static final String kGameRefSubkeyMoves = "moves";
     public static final String kGameRefSubkeyState = "state";
 
-    /* Game State Subkeys */
-    public static final String kGameStateCurrentPlayer = "current_player";
-    public static final String kGameStateWonBoards     = "won_boards";
-
     /* Game Move Subkeys */
     public static final String kGameMovesIDOuter = "id_outer";
     public static final String kGameMovesIDInner = "id_inner";
     public static final String kGameMovesPlayer  = "player";
     public static final String kGameMovesTimestamp  = "timestamp";
+
+    /* Game State Subkeys */
+    public static final String kGameStateCurrentPlayer = "current_player";
+    public static final String kGameStateBoardsWon = "boards_won";
+    public static final String kGameStateBoardsAvail = "boards_avail";
 
     /* Player Constants */
     public static final String kGamePlayerX = "x";

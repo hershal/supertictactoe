@@ -69,7 +69,8 @@ public class PlayerMoveServlet extends HttpServlet {
 
             if (gm.play(move)) {
                 System.out.println("VALID MOVE PLAYED!");
-                SPPushFirebase(firebase, move);
+                SPPushMove(firebase, move);
+                SPUpdateState(firebase, gm, move);
                 json.append("success", "true");
             } else {
                 System.out.println("INVALID MOVE IGNORED!");

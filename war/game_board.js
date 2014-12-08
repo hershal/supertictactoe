@@ -7,6 +7,7 @@ k_hover_alpha = 0.1;
 k_fill_alpha = 1.0
 k_win_alpha = 0.85;
 k_null_alpha = 1.0;
+k_highlight_alpha = 0.1;
 
 function draw_player_glyph(ctx, player, center_x, center_y, inner_radius) {
 
@@ -39,6 +40,26 @@ function draw_o(ctx, center_x, center_y, inner_radius) {
     ctx.stroke();
 }
 
+function getMousePos(cnv, evt) {
+
+    var rect = cnv.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function get_color_for_player(player) {
+
+    if (player === "x") {
+        return k_x_fill_color;
+    } else if (player === "o") {
+        return k_o_fill_color;
+    }
+
+    return k_null_fill_color;
+}
+
 /* The top left is the "x,y" reference corner */
 var cell = function(x, y, width, height) {
 
@@ -50,6 +71,8 @@ var cell = function(x, y, width, height) {
     /* Occupant is either 'x' or 'o' */
     this.occupant = null;
     this.hover = null;
+
+    this.highlight_color = k_null_fill_color;
 }
 
 cell.prototype.set_occupant = function(occupant) {
@@ -60,6 +83,11 @@ cell.prototype.set_occupant = function(occupant) {
 cell.prototype.set_hover = function(hover) {
 
     this.hover = hover;
+}
+
+cell.prototype.set_highlight = function(highlight_color) {
+
+    this.highlight_color = highlight_color;
 }
 
 cell.prototype.stroke_box = function(ctx) {
@@ -110,6 +138,8 @@ cell.prototype.draw = function(ctx) {
     ctx.lineWidth = inner_radius/2;
     draw_player_glyph(ctx, this.occupant,
                       this.x + this.width/2, this.y + this.height/2, inner_radius);
+
+    this._fill_bg(ctx, this.highlight_color, k_highlight_alpha);
 }
 
 cell.prototype.contains = function(x, y) {
@@ -227,6 +257,14 @@ board.prototype.getCell = function(id) {
     return null;
 }
 
+board.prototype.set_highlight = function(highlight_color) {
+    for (var i=0; i<this.rows; ++i) {
+        for (var j=0; j<this.cols; ++j) {
+            this.cells[i * this.rows + j].set_highlight(highlight_color);
+        }
+    }
+}
+
 var superboard = function(x, y, width, height) {
 
     this.x = x;
@@ -295,10 +333,14 @@ superboard.prototype.getCell = function(id_outer, id_inner) {
     return null;
 }
 
-function getMousePos(cnv, evt) {
-    var rect = cnv.getBoundingClientRect();
-    return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
-    };
+superboard.prototype.highlight_board = function(board_outer, player) {
+    this.boards[board_outer].set_highlight(get_color_for_player(player));
+}
+
+superboard.prototype.reset_highlights = function() {
+    for (var i=0; i<this.rows; ++i) {
+        for (var j=0; j<this.cols; ++j) {
+            this.boards[i*this.cols + j].set_highlight(k_null_fill_color);
+        }
+    }
 }
