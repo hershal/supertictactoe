@@ -20,6 +20,10 @@ function play_move(game_url, player, id_outer, id_inner) {
 
 function play_move_ai(game_url, player_just_played, ai_difficulty) {
 
+    console.log("attempting AI move: " + game_url +
+                " player_just_played: " + player_just_played +
+                " diff: " + ai_difficulty);
+
     $.get('AIMove', {game_url:game_url, player_just_played:player_just_played, ai_difficulty:ai_difficulty},
           function(response) {
               var js = JSON.parse(response);
@@ -29,13 +33,6 @@ function play_move_ai(game_url, player_just_played, ai_difficulty) {
                   console.log(response);
               }
           });
-
-    /* Dunno if I need any of this */
-    /* if (document.getElementById("opponentRadioSelf").checked) { */
-    /*     alert("PLAYING: " + game_ref + " " + self_player); */
-    /* } else { */
-    /*     alert("PLAYING: " + game_ref + " " + get_opposing_player(self_player)); */
-    /* } */
 }
 
 function is_only_player(player) {
@@ -63,7 +60,11 @@ function is_only_player(player) {
 function handle_ai_button_press() {
 
     if (is_only_player(self_player)) {
-        /* play_move_ai(game_ref.toString(), self_player, 100); */
+        console.log(self_player);
+        console.log(player_highlight);
+        if (self_player != player_highlight) {
+            play_move_ai(game_ref.toString(), self_player, 100);
+        }
     } else {
         document.getElementById("opponentRadioHuman").checked = true;
         document.getElementById("opponentRadioAI").checked = false;
