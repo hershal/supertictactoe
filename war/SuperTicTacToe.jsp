@@ -120,10 +120,10 @@
                                             <label><input type="radio" name="opponentRadios" id="opponentRadioHuman" value="Human" checked="">Human</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="oponentRadioAI" value="AI">AI</label>
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioAI" value="AI" onclick="js:handle_ai_button_press()">AI</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self">Self</label>
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" onclick="js:set_self_to_current_player()">Self</label>
                                         </div>
                                     </div>
                                 </div>
@@ -175,15 +175,43 @@
          var game_moves = game_ref.child("moves");
          var game_state = game_ref.child("state");
          var game_seat = game_ref.child("seats");
-         var game_seat_self = null;
+         var game_seat_self = "Human";
+
+         var last_radio = null;
+
+         var player_x = null;
+         var player_o = null;
 
          /* Spectator is null */
          var player_highlight;
          var self_player = null;
 
+         var canvas = document.getElementById("game_board_canvas");
+         var ctx = canvas.getContext("2d");
+
+         var c1 = new cell(10, 10, 20, 20);
+         var sb1 = new superboard(160, 10, 500, 400);
+
+         $('input[name$="opponentRadios"]').change(function(){
+             last_radio = $(this).val();
+
+             if ($(this).val() == "Self") {
+                 set_self_to_current_player();
+                 c1.set_occupant(self_player);
+                 c1.draw(ctx);
+             }
+         })
+
+         game_moves.on('child_added', function(snapshot) {
+             var pkg = snapshot.val();
+             if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
+                 sb1.getCell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
+                 sb1.draw(ctx);
+             }
+         });
+
          game_seat.once('value', function(snapshot) {
-             var player_x = null;
-             var player_o = null;
+
              snapshot.forEach(function(snap) {
                  player_x = player_x || snap.val().x;
                  player_o = player_o || snap.val().o;
@@ -202,46 +230,35 @@
              } else {
                  alert("PLACEHOLDER:\nyou are spectating");
              }
+
+             c1.set_occupant(self_player);
+             c1.draw(ctx);
          });
 
-
-         var canvas = document.getElementById("game_board_canvas");
-         var ctx = canvas.getContext("2d");
-
-         var c1 = new cell(10, 10, 20, 20);
-         c1.draw(ctx);
-
-         var c2 = new cell(10, 50, 20, 20);
-         c2.set_occupant("x");
-         c2.draw(ctx);
-
-         var c3 = new cell(10, 110, 20, 20);
-         c3.set_occupant("o");
-         c3.draw(ctx);
-
-         var b1 = new board(10, 150, 100, 100);
-         b1.draw(ctx);
-
-         var sb1 = new superboard(160, 10, 500, 400);
-         sb1.draw(ctx);
-
-         game_moves.on('child_added', function(snapshot) {
-             var pkg = snapshot.val();
-             if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
-                 sb1.getCell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
-                 sb1.draw(ctx);
+         game_seat.on('child_added', function(snapshot) {
+             /* When another human has been added switch to that */
+             if (!self_is_only_player()) {
+                 if ((document.getElementById("opponentRadioAI").checked) ||
+                     (document.getElementById("opponentRadioSelf").checked)) {
+                         document.getElementById("opponentRadioHuman").checked = true;
+                 }
              }
          });
+
+         game_seat.on('child_removed', function(snapshot) {
+             /* Do nothing; player may be waiting for another human */
+         })
 
          game_state.on('value', function(snapshot) {
              var pkg = snapshot.val();
              player_highlight = (snapshot.child("current_player").val() || "x");
 
              if (document.getElementById("opponentRadioSelf").checked) {
-                 self_player = player_highlight;
+                 set_self_to_current_player();
              }
 
-             console.log(self_player);
+             c1.set_occupant(self_player);
+             c1.draw(ctx);
 
              var game_state_boards_avail = game_state.child("boards_avail");
              var game_state_boards_won = game_state.child("boards_won");
@@ -278,7 +295,7 @@
 
          canvas.addEventListener('mousedown', function(evt) {
              if (self_player != player_highlight) {
-                 alert("PLACEHOLDER:\nIt's not your turn.\ncurrent_player: " + player_highlight + " you: " + self_player);
+                 /* alert("PLACEHOLDER:\nIt's not your turn.\ncurrent_player: " + player_highlight + " you: " + self_player); */
                  return;
              }
              var pos = getMousePos(canvas, evt);

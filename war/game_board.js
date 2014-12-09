@@ -57,8 +57,17 @@ function get_color_for_player(player) {
     } else if (player === "o") {
         return k_o_fill_color;
     }
-
     return k_null_fill_color;
+}
+
+function get_opposing_player(player) {
+
+    if (player == "x") {
+        return "o";
+    } else if (player == "o") {
+        return "x";
+    }
+    return;
 }
 
 /* The top left is the "x,y" reference corner */
