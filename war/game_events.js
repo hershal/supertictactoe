@@ -9,7 +9,7 @@ function play_move(game_url, player, id_outer, id_inner) {
                   console.log(response);
                   if (document.getElementById("opponentRadioAI").checked) {
                       console.log("play_move: calling play_move_ai");
-                      play_move_ai(game_url, player, 100);
+                      play_move_ai(game_url, player, 0);
                   }
               } else {
                   console.log("player move failed");
@@ -63,7 +63,7 @@ function handle_ai_button_press() {
         console.log(self_player);
         console.log(player_highlight);
         if (self_player != player_highlight) {
-            play_move_ai(game_ref.toString(), self_player, 100);
+            play_move_ai(game_ref.toString(), self_player, 0);
         }
     } else {
         document.getElementById("opponentRadioHuman").checked = true;
