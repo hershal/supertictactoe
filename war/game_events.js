@@ -1,4 +1,5 @@
 function play_move(game_url, player, id_outer, id_inner) {
+
     $.get('PlayerMove',{game_url:game_url, player:player, id_inner:id_inner, id_outer:id_outer},
           function(response) {
               var js = JSON.parse(response);
@@ -7,21 +8,30 @@ function play_move(game_url, player, id_outer, id_inner) {
                   if (document.getElementById("opponentRadioSelf").checked) {
                       /* Handled elsewhere (in game_state.on('value')) */
                   } else if (document.getElementById("opponentRadioAI").checked) {
-                      play_move_ai(game_url);
+                      play_move_ai(game_url, player);
                   }
               }
           }
          );
 }
 
-function play_move_ai() {
+function play_move_ai(game_url, player_just_played) {
+
+    $.get('PlayerMove',{game_url:game_url, player_just_played:player_just_played},
+          function(response) {
+              var js = JSON.parse(response);
+
+              if (js.success == "true") {
+                  /* Yay */
+              }
+          }
+         );
 
     if (document.getElementById("opponentRadioSelf").checked) {
         alert("PLAYING: " + game_ref + " " + self_player);
     } else {
         alert("PLAYING: " + game_ref + " " + get_opposing_player(self_player));
     }
-
 }
 
 function is_only_player(player) {
@@ -35,8 +45,6 @@ function is_only_player(player) {
             plr_o = plr_o || snap.val().o;
         });
     });
-
-    alert(player + " " + plr_x + " " + plr_o);
 
     if (plr_x == player) {
         return plr_o == null;
@@ -80,4 +88,17 @@ function set_self_to_current_player() {
     }
     c1.set_occupant(self_player);
     c1.draw(ctx);
+}
+
+function disable_single_player() {
+
+    document.getElementById("opponentRadioHuman").checked = true;
+    $("#opponentRadioAI").prop("disabled", true);
+    $("#opponentRadioSelf").prop("disabled", true);
+}
+
+function enable_single_player() {
+
+    $("#opponentRadioAI").prop("disabled", false);
+    $("#opponentRadioSelf").prop("disabled", false);
 }

@@ -231,6 +231,10 @@
                  alert("PLACEHOLDER:\nyou are spectating");
              }
 
+             if (!is_only_player(self_player)) {
+                 disable_single_player();
+             }
+
              c1.set_occupant(self_player);
              c1.draw(ctx);
          });
@@ -238,20 +242,13 @@
          game_seat.on('child_added', function(snapshot) {
              /* When another human has been added switch to that */
              if (!is_only_player(self_player)) {
-                 if ((document.getElementById("opponentRadioAI").checked) ||
-                     (document.getElementById("opponentRadioSelf").checked)) {
-                         document.getElementById("opponentRadioHuman").checked = true;
-                         /* document.getElementById("opponentRadioAI").disabled = true; */
-                         /* document.getElementById("opponentRadioSelf").disabled = true; */
-                 }
+                 disable_single_player();
              }
          });
 
          game_seat.on('child_removed', function(snapshot) {
-             /* document.getElementById("opponentRadioAI").disabled = false; */
-             /* document.getElementById("opponentRadioSelf").disabled = false; */
-
-         })
+             enable_single_player();
+         });
 
          game_state.on('value', function(snapshot) {
              var pkg = snapshot.val();
