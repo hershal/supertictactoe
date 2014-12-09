@@ -237,7 +237,7 @@
 
          game_seat.on('child_added', function(snapshot) {
              /* When another human has been added switch to that */
-             if (!self_is_only_player()) {
+             if (!is_only_player(self_player)) {
                  if ((document.getElementById("opponentRadioAI").checked) ||
                      (document.getElementById("opponentRadioSelf").checked)) {
                          document.getElementById("opponentRadioHuman").checked = true;

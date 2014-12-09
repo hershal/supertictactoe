@@ -7,7 +7,7 @@ function play_move(game_url, player, id_outer, id_inner) {
                   if (document.getElementById("opponentRadioSelf").checked) {
                       /* Handled elsewhere (in game_state.on('value')) */
                   } else if (document.getElementById("opponentRadioAI").checked) {
-                      play_move_ai(game_ref.toString());
+                      play_move_ai(game_url);
                   }
               }
           }
@@ -24,7 +24,7 @@ function play_move_ai() {
 
 }
 
-function self_is_only_player() {
+function is_only_player(player) {
 
     var plr_x = null;
     var plr_o = null;
@@ -36,9 +36,9 @@ function self_is_only_player() {
         });
     });
 
-    if (plr_x == self_player) {
+    if (plr_x == player) {
         return plr_o == null;
-    } else if (plr_o == self_player) {
+    } else if (plr_o == player) {
         return plr_x == null;
     }
 
@@ -47,7 +47,7 @@ function self_is_only_player() {
 
 function handle_ai_button_press() {
 
-    if (self_is_only_player(game_seat)) {
+    if (is_only_player(self_player)) {
         play_move_ai();
     } else {
         document.getElementById("opponentRadioHuman").checked = true;
