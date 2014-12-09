@@ -16,6 +16,17 @@
     <url-pattern>/PlayerMove</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+      <servlet-name>AIMoveServlet</servlet-name>
+      <servlet-class>com.supertictactoe.supertictactoe.AIMoveServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>AIMoveServlet</servlet-name>
+      <url-pattern>/AIMove</url-pattern>
+  </servlet-mapping>
+
+
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>SuperTicTacToe.jsp</welcome-file>

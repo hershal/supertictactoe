@@ -1,6 +1,6 @@
 function play_move(game_url, player, id_outer, id_inner) {
 
-    $.get('PlayerMove',{game_url:game_url, player:player, id_inner:id_inner, id_outer:id_outer},
+    $.get('PlayerMove', {game_url:game_url, player:player, id_inner:id_inner, id_outer:id_outer},
           function(response) {
               var js = JSON.parse(response);
 
@@ -8,30 +8,30 @@ function play_move(game_url, player, id_outer, id_inner) {
                   if (document.getElementById("opponentRadioSelf").checked) {
                       /* Handled elsewhere (in game_state.on('value')) */
                   } else if (document.getElementById("opponentRadioAI").checked) {
-                      play_move_ai(game_url, player);
+                      play_move_ai(game_url, player, 100);
                   }
               }
-          }
-         );
+          });
 }
 
-function play_move_ai(game_url, player_just_played) {
+function play_move_ai(game_url, player_just_played, ai_difficulty) {
 
-    $.get('PlayerMove',{game_url:game_url, player_just_played:player_just_played},
+    $.get('AIMove', {game_url:game_url, player_just_played:player_just_played, ai_difficulty:ai_difficulty},
           function(response) {
               var js = JSON.parse(response);
-
               if (js.success == "true") {
                   /* Yay */
+              } else {
+                  /* Oh no */
               }
-          }
-         );
+          });
 
-    if (document.getElementById("opponentRadioSelf").checked) {
-        alert("PLAYING: " + game_ref + " " + self_player);
-    } else {
-        alert("PLAYING: " + game_ref + " " + get_opposing_player(self_player));
-    }
+    /* Dunno if I need any of this */
+    /* if (document.getElementById("opponentRadioSelf").checked) { */
+    /*     alert("PLAYING: " + game_ref + " " + self_player); */
+    /* } else { */
+    /*     alert("PLAYING: " + game_ref + " " + get_opposing_player(self_player)); */
+    /* } */
 }
 
 function is_only_player(player) {
@@ -59,7 +59,7 @@ function is_only_player(player) {
 function handle_ai_button_press() {
 
     if (is_only_player(self_player)) {
-        play_move_ai(game_ref.toString());
+        /* play_move_ai(game_ref.toString(), self_player, 100); */
     } else {
         document.getElementById("opponentRadioHuman").checked = true;
         document.getElementById("opponentRadioAI").checked = false;

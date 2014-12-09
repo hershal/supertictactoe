@@ -1,11 +1,6 @@
 package com.supertictactoe.supertictactoe;
 
-import static com.supertictactoe.Common.SuperTicTacToeStrings.*;
-
 import java.io.IOException;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
