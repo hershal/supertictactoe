@@ -5,11 +5,15 @@ function play_move(game_url, player, id_outer, id_inner) {
               var js = JSON.parse(response);
 
               if (js.success == "true") {
-                  if (document.getElementById("opponentRadioSelf").checked) {
-                      /* Handled elsewhere (in game_state.on('value')) */
-                  } else if (document.getElementById("opponentRadioAI").checked) {
+                  console.log("player move successful");
+                  console.log(response);
+                  if (document.getElementById("opponentRadioAI").checked) {
+                      console.log("play_move: calling play_move_ai");
                       play_move_ai(game_url, player, 100);
                   }
+              } else {
+                  console.log("player move failed");
+                  console.log(response);
               }
           });
 }
@@ -20,9 +24,9 @@ function play_move_ai(game_url, player_just_played, ai_difficulty) {
           function(response) {
               var js = JSON.parse(response);
               if (js.success == "true") {
-                  /* Yay */
+                  console.log("ai move successful");
               } else {
-                  /* Oh no */
+                  console.log(response);
               }
           });
 
