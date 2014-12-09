@@ -21,11 +21,11 @@ public class StrategyRandom implements Strategy {
 
   @Override
   public int getNextBoard(Game game) {
-    return (int) Math.round(Math.random()*game.getSize()+0.5);
+    return (int) game.validBoards().get((int) Math.floor(Math.random()*game.validBoards().size()));
   }
 
   @Override
   public int getNextCell(Game game, int board) {
-    return (int) Math.round(Math.random()*game.getSize()+0.5);
+    return (int) Math.floor(Math.random()*game.boards.get(board).cells.size());
   }
 }
