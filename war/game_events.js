@@ -45,17 +45,18 @@ function is_only_player(player) {
     return ((plr_x != null) && (plr_o != null));
 }
 
+/* This function is dirtier because it's wired to a radio button */
 function handle_ai_button_press() {
 
     if (is_only_player(self_player)) {
-        play_move_ai();
+        play_move_ai(game_ref.toString());
     } else {
         document.getElementById("opponentRadioHuman").checked = true;
         document.getElementById("opponentRadioAI").checked = false;
     }
 }
 
-function set_self_to_current_player() {
+function swap_current_player() {
     self_player = player_highlight;
     if (self_player == "x") {
         game_seat_self.set({o: "o"})

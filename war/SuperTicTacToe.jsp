@@ -123,7 +123,7 @@
                                             <label><input type="radio" name="opponentRadios" id="opponentRadioAI" value="AI" onclick="js:handle_ai_button_press()">AI</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" onclick="js:set_self_to_current_player()">Self</label>
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" onclick="js:swap_current_player()">Self</label>
                                         </div>
                                     </div>
                                 </div>
@@ -196,7 +196,7 @@
              last_radio = $(this).val();
 
              if ($(this).val() == "Self") {
-                 set_self_to_current_player();
+                 swap_current_player();
                  c1.set_occupant(self_player);
                  c1.draw(ctx);
              }
@@ -221,12 +221,12 @@
                  self_player = "x";
                  game_seat_self = game_seat.push({x: "x"});
                  game_seat_self.onDisconnect().remove();
-                 alert("PLACEHOLDER:\nplayer is x");
+                 /* alert("PLACEHOLDER:\nplayer is x"); */
              } else if (player_o == null) {
                  self_player = "o";
                  game_seat_self = game_seat.push({o: "o"});
                  game_seat_self.onDisconnect().remove();
-                 alert("PLACEHOLDER:\nplayer is o\n");
+                 /* alert("PLACEHOLDER:\nplayer is o\n"); */
              } else {
                  alert("PLACEHOLDER:\nyou are spectating");
              }
@@ -254,7 +254,7 @@
              player_highlight = (snapshot.child("current_player").val() || "x");
 
              if (document.getElementById("opponentRadioSelf").checked) {
-                 set_self_to_current_player();
+                 swap_current_player();
              }
 
              c1.set_occupant(self_player);
