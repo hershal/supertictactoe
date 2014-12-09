@@ -123,7 +123,7 @@
                                             <label><input type="radio" name="opponentRadios" id="opponentRadioAI" value="AI" onclick="js:handle_ai_button_press()">AI</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" onclick="js:swap_current_player()">Self</label>
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" onclick="js:handle_self_button_press()">Self</label>
                                         </div>
                                     </div>
                                 </div>
@@ -195,8 +195,8 @@
          $('input[name$="opponentRadios"]').change(function(){
              last_radio = $(this).val();
 
+             /* Why do I need this? */
              if ($(this).val() == "Self") {
-                 swap_current_player();
                  c1.set_occupant(self_player);
                  c1.draw(ctx);
              }
@@ -241,12 +241,16 @@
                  if ((document.getElementById("opponentRadioAI").checked) ||
                      (document.getElementById("opponentRadioSelf").checked)) {
                          document.getElementById("opponentRadioHuman").checked = true;
+                         /* document.getElementById("opponentRadioAI").disabled = true; */
+                         /* document.getElementById("opponentRadioSelf").disabled = true; */
                  }
              }
          });
 
          game_seat.on('child_removed', function(snapshot) {
-             /* Do nothing; player may be waiting for another human */
+             /* document.getElementById("opponentRadioAI").disabled = false; */
+             /* document.getElementById("opponentRadioSelf").disabled = false; */
+
          })
 
          game_state.on('value', function(snapshot) {
@@ -254,7 +258,7 @@
              player_highlight = (snapshot.child("current_player").val() || "x");
 
              if (document.getElementById("opponentRadioSelf").checked) {
-                 swap_current_player();
+                 set_self_to_current_player();
              }
 
              c1.set_occupant(self_player);

@@ -36,6 +36,8 @@ function is_only_player(player) {
         });
     });
 
+    alert(player + " " + plr_x + " " + plr_o);
+
     if (plr_x == player) {
         return plr_o == null;
     } else if (plr_o == player) {
@@ -53,14 +55,29 @@ function handle_ai_button_press() {
     } else {
         document.getElementById("opponentRadioHuman").checked = true;
         document.getElementById("opponentRadioAI").checked = false;
+        document.getElementById("opponentRadioSelf").checked = false;
     }
 }
 
-function swap_current_player() {
+function handle_self_button_press() {
+
+    if (is_only_player(self_player)) {
+        set_self_to_current_player();
+    } else {
+        document.getElementById("opponentRadioHuman").checked = true;
+        document.getElementById("opponentRadioAI").checked = false;
+        document.getElementById("opponentRadioSelf").checked = false;
+    }
+}
+
+function set_self_to_current_player() {
+
     self_player = player_highlight;
     if (self_player == "x") {
-        game_seat_self.set({o: "o"})
-    } else {
         game_seat_self.set({x: "x"})
+    } else {
+        game_seat_self.set({o: "o"})
     }
+    c1.set_occupant(self_player);
+    c1.draw(ctx);
 }
