@@ -46,12 +46,13 @@
                     <a class="navbar-brand" href="/">SuperTicTacToe</a>
                 </div>
                 <div class="navbar-collapse collapse navbar-inverse-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a onclick="js: handle_session_jump_input()">Jump to Game</a></li>
+                        <li><a onclick="js: handle_reset_button()">Reset Game</a></li>
+                    </ul>
                     <form class="navbar-form navbar-right" onSubmit="js:handle_session_jump_input()">
                         <input id="session-id-input" type="text" class="form-control col-lg-10" placeholder="Session ID">
                     </form>
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- <li><a href="#">Link</a></li> -->
-                    </ul>
                 </div>
             </div>
         </div>
@@ -72,7 +73,6 @@
                                 <canvas id="game_board_canvas" width="800" height="450">
                                     Canvas Tag not supported
                                 </canvas>
-
                             </div>
                         </div>
                     </div>
@@ -85,10 +85,8 @@
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <div class="col-lg-2">
-                                        <p><strong>Opponent:</strong></p>
-                                    </div><br/>
-                                    <div class="col-lg-10">
+                                    <p><strong>Opponent:</strong></p>
+                                    <div class="container">
                                         <div class="radio">
                                             <label><input type="radio" name="opponentRadios" id="opponentRadioHuman" value="Human" checked="">Human</label>
                                         </div>
@@ -102,9 +100,26 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Information</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="container">
+                                    <p><strong>You are:</strong></p>
+                                    <canvas id="self_player_canvas" width="70" height="70">
+                                        Canvas Tag not supported
+                                    </canvas>
+                                    <br /> <br>
+                                    <p><strong>Current turn:</strong></p>
+                                    <canvas id="highlight_player_canvas" width="70" height="70">
+                                        Canvas Tag not supported
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="jumbotron">
@@ -166,7 +181,15 @@
          var canvas = document.getElementById("game_board_canvas");
          var ctx = canvas.getContext("2d");
 
-         var c1 = new cell(10, 10, 20, 20);
+         var p_canvas = document.getElementById("self_player_canvas");
+         var p_ctx = p_canvas.getContext("2d");
+
+         var h_canvas = document.getElementById("highlight_player_canvas");
+         var h_ctx = h_canvas.getContext("2d");
+
+         var c1 = new cell(0, 0, 70, 70);
+         var c2 = new cell(0, 0, 70, 70);
+
          var sb1 = new superboard(160, 10, 500, 400);
 
          $('input[name$="opponentRadios"]').change(function(){
@@ -175,17 +198,17 @@
              /* Why do I need this? */
              if ($(this).val() == "Self") {
                  c1.set_occupant(self_player);
-                 c1.draw(ctx);
+                 c1.draw(p_ctx);
              }
          })
 
-         game_moves.on('child_added', function(snapshot) {
-             var pkg = snapshot.val();
-             if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
-                 sb1.get_cell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
-                 sb1.draw(ctx);
-             }
-         });
+             game_moves.on('child_added', function(snapshot) {
+                 var pkg = snapshot.val();
+                 if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
+                     sb1.get_cell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
+                     sb1.draw(ctx);
+                 }
+             });
 
          game_seat.once('value', function(snapshot) {
 
@@ -213,7 +236,7 @@
              }
 
              c1.set_occupant(self_player);
-             c1.draw(ctx);
+             c1.draw(p_ctx);
          });
 
          game_seat.on('child_added', function(snapshot) {
@@ -235,8 +258,11 @@
                  set_self_to_current_player();
              }
 
+             c2.set_occupant(player_highlight);
+             c2.draw(h_ctx);
+
              c1.set_occupant(self_player);
-             c1.draw(ctx);
+             c1.draw(p_ctx);
 
              var game_state_boards_avail = game_state.child("boards_avail");
              var game_state_boards_won = game_state.child("boards_won");

@@ -88,6 +88,12 @@ function handle_session_jump_input() {
     jump_to_session(document.getElementById("session-id-input").value);
 }
 
+function handle_reset_button() {
+
+    game_ref.remove();
+    window.location.reload();
+}
+
 function set_self_to_current_player() {
 
     self_player = player_highlight;
@@ -97,7 +103,7 @@ function set_self_to_current_player() {
         game_seat_self.set({o: "o"})
     }
     c1.set_occupant(self_player);
-    c1.draw(ctx);
+    c1.draw(p_ctx);
 }
 
 function disable_single_player() {
