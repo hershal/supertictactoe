@@ -136,6 +136,8 @@
 
         <!-- Don't put too much here!! -->
         <script>
+         window.onhashchange = hashChanged;
+
          var game_ref = init_session_id();
          var game_moves = game_ref.child("moves");
          var game_state = game_ref.child("state");
