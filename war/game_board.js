@@ -41,7 +41,7 @@ function draw_o(ctx, center_x, center_y, inner_radius) {
     ctx.stroke();
 }
 
-function getMousePos(cnv, evt) {
+function get_mouse_pos(cnv, evt) {
 
     var rect = cnv.getBoundingClientRect();
     return {
@@ -153,6 +153,7 @@ cell.prototype.draw = function(ctx) {
 }
 
 cell.prototype.contains = function(x, y) {
+
     if (((x > this.x) && (x < (this.x + this.width))) &&
         ((y > this.y) && (y < (this.y + this.height)))) {
         return true;
@@ -254,7 +255,8 @@ board.prototype.draw = function(ctx) {
     this.draw_winner(ctx);
 }
 
-board.prototype.getCellAt = function(x,y) {
+board.prototype.get_cell_at = function(x,y) {
+
     for (var i=0; i<this.rows; ++i) {
         for (var j=0; j<this.cols; ++j) {
             if (this.cells[i*this.rows + j].contains(x,y)) {
@@ -266,7 +268,8 @@ board.prototype.getCellAt = function(x,y) {
     return null;
 }
 
-board.prototype.getCell = function(id) {
+board.prototype.get_cell = function(id) {
+
     if (id < (this.rows*this.cols)) {
         return this.cells[id];
     }
@@ -274,6 +277,7 @@ board.prototype.getCell = function(id) {
 }
 
 board.prototype.set_highlight = function(highlight_color) {
+
     for (var i=0; i<this.rows; ++i) {
         for (var j=0; j<this.cols; ++j) {
             this.cells[i * this.rows + j].set_highlight(highlight_color);
@@ -327,11 +331,11 @@ superboard.prototype.draw = function(ctx) {
     }
 }
 
-superboard.prototype.getCellAt = function(x,y) {
+superboard.prototype.get_cell_at = function(x,y) {
 
     for (var i=0; i<this.rows; ++i) {
         for (var j=0; j<this.cols; ++j) {
-            var cellAt = this.boards[i*this.cols + j].getCellAt(x,y);
+            var cellAt = this.boards[i*this.cols + j].get_cell_at(x,y);
             if (cellAt != null) {
                 return {id_outer: i*this.rows + j,
                         id_inner: cellAt.id,
@@ -341,19 +345,21 @@ superboard.prototype.getCellAt = function(x,y) {
     }
 }
 
-superboard.prototype.getCell = function(id_outer, id_inner) {
+superboard.prototype.get_cell = function(id_outer, id_inner) {
 
     if (id_outer < (this.rows*this.cols)) {
-        return this.boards[id_outer].getCell(id_inner);
+        return this.boards[id_outer].get_cell(id_inner);
     }
     return null;
 }
 
 superboard.prototype.highlight_board = function(board_outer, player) {
+
     this.boards[board_outer].set_highlight(get_color_for_player(player));
 }
 
 superboard.prototype.reset_highlights = function() {
+
     for (var i=0; i<this.rows; ++i) {
         for (var j=0; j<this.cols; ++j) {
             this.boards[i*this.cols + j].set_highlight(k_null_fill_color);

@@ -136,7 +136,7 @@
 
         <!-- Don't put too much here!! -->
         <script>
-         window.onhashchange = hashChanged;
+         window.onhashchange = hash_changed;
 
          var game_ref = init_session_id();
          var game_moves = game_ref.child("moves");
@@ -172,7 +172,7 @@
          game_moves.on('child_added', function(snapshot) {
              var pkg = snapshot.val();
              if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
-                 sb1.getCell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
+                 sb1.get_cell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
                  sb1.draw(ctx);
              }
          });
@@ -247,13 +247,13 @@
 
          var oldCellAt = null;
          canvas.addEventListener('mousemove', function(evt) {
-             var pos = getMousePos(canvas, evt);
+             var pos = get_mouse_pos(canvas, evt);
 
              if (oldCellAt != null) {
                  oldCellAt.val.set_hover(false);
              }
 
-             var cellAt = sb1.getCellAt(pos.x, pos.y);
+             var cellAt = sb1.get_cell_at(pos.x, pos.y);
              if (cellAt != null) {
                  cellAt.val.set_hover(true);
              }
@@ -266,8 +266,8 @@
                  /* alert("PLACEHOLDER:\nIt's not your turn.\ncurrent_player: " + player_highlight + " you: " + self_player); */
                  return;
              }
-             var pos = getMousePos(canvas, evt);
-             var cellAt = sb1.getCellAt(pos.x, pos.y);
+             var pos = get_mouse_pos(canvas, evt);
+             var cellAt = sb1.get_cell_at(pos.x, pos.y);
              if (cellAt != null) {
                  play_move(game_ref.toString(), self_player,
                            cellAt.id_outer, cellAt.id_inner);

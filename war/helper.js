@@ -9,10 +9,12 @@ function jump_to_session() {
 }
 
 function get_current_session_id() {
+
     return window.location.hash.replace(/#/g, '');
 }
 
 function init_session_id() {
+
     var ref = new Firebase('https://sizzling-torch-8770.firebaseIO.com/');
     var hash = get_current_session_id();
 
@@ -29,7 +31,8 @@ function init_session_id() {
     return ref;
 }
 
-function hashChanged() {
+function hash_changed() {
+
     window.location = document.location.href;
     window.location.reload();
 };
