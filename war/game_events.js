@@ -83,6 +83,11 @@ function handle_self_button_press() {
     }
 }
 
+function handle_session_jump_input() {
+
+    jump_to_session(document.getElementById("session-id-input").value);
+}
+
 function set_self_to_current_player() {
 
     self_player = player_highlight;

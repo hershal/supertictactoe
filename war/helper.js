@@ -1,7 +1,8 @@
-function jump_to_session() {
-    var pathname = window.location.pathname;
-    var session_id = $('#session-id-input').val();
+function jump_to_session(session_id) {
 
+    console.log("Jumping to session: " + session_id);
+
+    var pathname = window.location.pathname;
     var new_href = window.location.pathname + '#' + session_id;
 
     window.location = new_href;

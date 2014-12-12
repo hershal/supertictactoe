@@ -45,6 +45,14 @@
                     </button>
                     <a class="navbar-brand" href="/">SuperTicTacToe</a>
                 </div>
+                <div class="navbar-collapse collapse navbar-inverse-collapse">
+                    <form class="navbar-form navbar-right" onSubmit="js:handle_session_jump_input()">
+                        <input id="session-id-input" type="text" class="form-control col-lg-10" placeholder="Session ID">
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- <li><a href="#">Link</a></li> -->
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -143,6 +151,8 @@
          var game_state = game_ref.child("state");
          var game_seat = game_ref.child("seats");
          var game_seat_self = "Human";
+
+         document.getElementById("session-id-input").value = game_ref.name();
 
          var last_radio = null;
 
