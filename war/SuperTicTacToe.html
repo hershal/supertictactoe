@@ -200,15 +200,19 @@
                  c1.set_occupant(self_player);
                  c1.draw(p_ctx);
              }
-         })
+         });
 
-             game_moves.on('child_added', function(snapshot) {
-                 var pkg = snapshot.val();
-                 if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
-                     sb1.get_cell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
-                     sb1.draw(ctx);
-                 }
-             });
+         game_moves.on('child_added', function(snapshot) {
+             var pkg = snapshot.val();
+             if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
+                 sb1.get_cell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
+                 sb1.draw(ctx);
+             }
+         });
+
+         game_moves.on('child_removed', function(snapshot) {
+             window.location.reload();
+         });
 
          game_seat.once('value', function(snapshot) {
 
