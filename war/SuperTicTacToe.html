@@ -170,6 +170,7 @@
          var game_random_ref = game_ref.parent().parent().child("avail_random_games/" + game_ref.name());
          var game_moves = game_ref.child("moves");
          var game_state = game_ref.child("state");
+         var game_client_state = game_ref.child("client_state");
          var game_seat = game_ref.child("seats");
          var game_seat_self = "Human";
 
@@ -269,6 +270,19 @@
              enable_allow_random();
          });
 
+         game_client_state.on('value', function(snapshot) {
+
+             var game_state_allow_rand_checkbox_ref = game_client_state.child("allow_random");
+             var game_state_allow_rand_checkbox = null;
+
+             game_state_allow_rand_checkbox_ref.once('value', function(ss) {
+                 game_state_allow_rand_checkbox = ss.val();
+                 console.log("ALLOWED RAND: " + game_state_allow_rand_checkbox);
+             });
+
+             document.getElementById("allow_random_checkbox").checked = game_state_allow_rand_checkbox == "1" ? true : false;
+         });
+
          game_state.on('value', function(snapshot) {
 
              var pkg = snapshot.val();
@@ -286,15 +300,6 @@
 
              var game_state_boards_avail = game_state.child("boards_avail");
              var game_state_boards_won = game_state.child("boards_won");
-             var game_state_allow_rand_checkbox_ref = game_state.child("allow_random");
-             var game_state_allow_rand_checkbox = null;
-
-             game_state_allow_rand_checkbox_ref.once('value', function(ss) {
-                 game_state_allow_rand_checkbox = ss.val();
-             });
-
-             document.getElementById("allow_random_checkbox").checked = game_state_allow_rand_checkbox == "1" ? true : false;
-             console.log("ALLOWED RAND: " + game_state_allow_rand_checkbox);
 
              sb1.reset_highlights();
 

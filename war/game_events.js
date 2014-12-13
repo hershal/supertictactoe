@@ -88,14 +88,14 @@ function handle_allow_rand_checkbox() {
     if (document.getElementById("allow_random_checkbox").checked == true) {
         if (is_only_player(self_player) == true) {
             game_random_ref.set(game_random_ref.name());
-            game_state.child("allow_random").set("1");
+            game_client_state.child("allow_random").set("1");
             console.log("random game ref created " + game_random_ref.name());
         } else {
             document.getElementById("allow_random_checkbox").checked = false;
             console.log("can't allow random players, already have two players");
         }
     } else {
-        game_state.child("allow_random").remove();
+        game_client_state.child("allow_random").remove();
         game_random_ref.remove();
         console.log("random game ref deleted " + game_random_ref.name());
     }
