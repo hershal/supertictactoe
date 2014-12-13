@@ -134,22 +134,26 @@ function disable_single_player() {
     document.getElementById("opponentRadioHuman").checked = true;
     $("#opponentRadioAI").prop("disabled", true);
     $("#opponentRadioSelf").prop("disabled", true);
+    console.log("disabled single player");
 }
 
 function enable_single_player() {
 
     $("#opponentRadioAI").prop("disabled", false);
     $("#opponentRadioSelf").prop("disabled", false);
+    console.log("enabled single player");
 }
 
 function disable_allow_random() {
 
     $("#allow_random_checkbox").prop("disabled", true);
     game_random_ref.remove();
+    console.log("disabled allow random");
 }
 
 function enable_allow_random() {
 
     $("#allow_random_checkbox").prop("disabled", false);
     game_random_ref.set(game_random_ref.name());
+    console.log("enabled allow random");
 }
