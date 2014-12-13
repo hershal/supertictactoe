@@ -68,10 +68,14 @@ public class PlayerMoveServlet extends HttpServlet {
                 SPPushMove(firebase, move);
                 SPUpdateState(firebase, gm, move);
                 json.append("success", "true");
+                json.append("id_outer", move.getBoard() + "");
+                json.append("id_inner", move.getCell() + "");
             } else {
                 System.out.println("INVALID MOVE IGNORED!");
                 json.append("success", "false");
                 json.append("reason", "invalid_move");
+                json.append("id_outer", move.getBoard() + "");
+                json.append("id_inner", move.getCell() + "");
             }
             json.write(response.getWriter());
         } catch (FirebaseException e) {

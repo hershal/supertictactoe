@@ -67,10 +67,14 @@ public class AIMoveServlet extends HttpServlet {
                 SPPushMove(firebase, move);
                 SPUpdateState(firebase, gm, move);
                 json.append("success", "true");
+                json.append("id_outer", move.getBoard() + "");
+                json.append("id_inner", move.getCell() + "");
             } else {
                 System.out.println("AI INVALID MOVE IGNORED!");
                 json.append("success", "false");
                 json.append("reason", "ai_invalid_move");
+                json.append("id_outer", move.getBoard() + "");
+                json.append("id_inner", move.getCell() + "");
             }
             json.write(response.getWriter());
         } catch (FirebaseException e) {

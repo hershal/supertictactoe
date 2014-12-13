@@ -4,34 +4,22 @@ function play_move(game_url, player, id_outer, id_inner) {
           function(response) {
               var js = JSON.parse(response);
 
+              console.log("player: " + response);
               if (js.success == "true") {
-                  console.log("player move successful");
-                  console.log(response);
                   if (document.getElementById("opponentRadioAI").checked) {
-                      console.log("play_move: calling play_move_ai");
+                      /* console.log("play_move: calling play_move_ai"); */
                       play_move_ai(game_url, player, 0);
                   }
-              } else {
-                  console.log("player move failed");
-                  console.log(response);
               }
           });
 }
 
 function play_move_ai(game_url, player_just_played, ai_difficulty) {
 
-    console.log("attempting AI move: " + game_url +
-                " player_just_played: " + player_just_played +
-                " diff: " + ai_difficulty);
-
     $.get('AIMove', {game_url:game_url, player_just_played:player_just_played, ai_difficulty:ai_difficulty},
           function(response) {
               var js = JSON.parse(response);
-              if (js.success == "true") {
-                  console.log("ai move successful");
-              } else {
-                  console.log(response);
-              }
+              console.log("ai: " + response);
           });
 }
 
