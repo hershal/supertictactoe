@@ -88,7 +88,11 @@ public class Game implements Winnable, Matchable {
   private boolean isWinningLine(List<Integer> line) {
     Side possibleWinner = boards.get(line.get(0)).getOwner();
     for(int board : line) {
-      if (boards.get(board).getOwner() != possibleWinner) {return false;}
+        if ((boards.get(board).getOwner() != possibleWinner) ||
+            (!boards.get(board).isWon())) {
+
+            return false;
+        }
     }
     if (possibleWinner != Side.NIL) {owner = possibleWinner;}
     return possibleWinner != Side.NIL;

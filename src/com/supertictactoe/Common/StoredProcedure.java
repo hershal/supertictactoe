@@ -231,11 +231,15 @@ public class StoredProcedure {
             System.out.println("AVAIL BOARD: " + i);
         }
         
-        String gameWon = game.isWon() ? "1" : "0";
+        String game_winner = SPStringifySide(game.getOwner());
         
         data.put(kGameStateBoardsWon, boards_won);
         data.put(kGameStateBoardsAvail, boards_avail);
-        /* data.put(kGameStateWon, gameWon); */
+
+        if (game.isWon()) {
+            data.put(kGameStateWinner, game_winner);
+            data.put(kGameStateWon, "1");
+        }
 
         FirebaseResponse resp = null;
         try {
