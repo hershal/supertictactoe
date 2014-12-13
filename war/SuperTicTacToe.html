@@ -261,7 +261,6 @@
                  disable_single_player();
                  disable_allow_random();
              }
-             /* handle_allow_rand_checkbox(); */
          });
 
          game_seat.on('child_removed', function(snapshot) {
@@ -277,7 +276,7 @@
 
              game_state_allow_rand_checkbox_ref.once('value', function(ss) {
                  game_state_allow_rand_checkbox = ss.val();
-                 console.log("ALLOWED RAND: " + game_state_allow_rand_checkbox);
+                 console.log("allowed random player: " + game_state_allow_rand_checkbox);
              });
 
              document.getElementById("allow_random_checkbox").checked = game_state_allow_rand_checkbox == "1" ? true : false;
