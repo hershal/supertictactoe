@@ -17,6 +17,7 @@ public final class SuperTicTacToeStrings {
     public static final String kGameStateBoardsWon = "boards_won";
     public static final String kGameStateBoardsAvail = "boards_avail";
     public static final String kGameStateWon = "game_won";
+    public static final String kGameStateWon = "game_winner";
 
     /* Player Constants */
     public static final String kGamePlayerX = "x";

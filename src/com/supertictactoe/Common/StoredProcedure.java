@@ -235,7 +235,7 @@ public class StoredProcedure {
         
         data.put(kGameStateBoardsWon, boards_won);
         data.put(kGameStateBoardsAvail, boards_avail);
-        data.put(kGameStateWon, gameWon);
+        /* data.put(kGameStateWon, gameWon); */
 
         FirebaseResponse resp = null;
         try {
