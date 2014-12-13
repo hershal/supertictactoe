@@ -227,7 +227,7 @@ public class StoredProcedure {
         Map<String, Object> boards_avail = new LinkedHashMap<String, Object>();
         int j=0;
         for (Integer i : game.validBoards()) {
-            boards_avail.put(""+j, ""+i);
+            boards_avail.put(""+j++, ""+i);
             System.out.println("AVAIL BOARD: " + i);
         }
 
