@@ -331,11 +331,11 @@
                          console.log("winner is " + game_winner);
                          /* Don't like this repeated code, but I don't know any better */
                          if (game_winner == "x") {
-                             $("#winner-body").append("Congratulations, X has won!");
+                             document.getElementById('winner-body').innerHTML = "Congratulations, X has won!";
                          } else if (game_winner == "o") {
-                             $("#winner-body").append("Congratulations, O has won!");
+                             document.getElementById('winner-body').innerHTML = "Congratulations, O has won!";
                          } else {
-                             $("#winner-body").append("No winner. This is an error");
+                             document.getElementById('winner-body').innerHTML = "No winner. This is an error";
                          }
                          $('#game-win-modal').modal('show');
                      });
