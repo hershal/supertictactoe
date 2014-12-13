@@ -145,4 +145,13 @@ public class Board implements Winnable, Matchable {
     cells.get(move.getCell()).play(move);
     return true;
   }
+  
+  public boolean isFull(){
+	  for(int c=0; c < cells.size(); ++c){
+		  if (!cells.get(c).isWon()){
+			  return false;
+		  }
+	  }
+	  return true;
+  }
 }

@@ -102,11 +102,12 @@ public class Game implements Winnable, Matchable {
   public List<Integer> validBoards() {
     if (!validBoards.isEmpty()) {return validBoards;}
     List<Integer> open = new ArrayList<Integer>();
-    for(int b=0; b < boards.size(); ++b)
+    for(int b=0; b < boards.size(); ++b){
       if (!boards.get(b).isWon())
-	open.add(b);
+    	  open.add(b);
+    }
     return open;
-  }
+  }	
 
   // TODO: implement
   @Override
@@ -114,8 +115,26 @@ public class Game implements Winnable, Matchable {
     if(!isLegalMove(move)) {return false;}
     /* Constrain the next turn's valid boards */
     validBoards = new ArrayList<Integer>();
-    if (boards.get(move.getBoard()).isFree()) {
-      validBoards.add(move.getCell());
+    
+    //This will check to see if we are playing in a board that is won
+    if (!boards.get(move.getCell()).isFree()) {
+    	//For every board that is not full, add it to the list
+    	for(int i = 0; i < size; i++){
+    		if(!boards.get(i).isFull()){
+    			validBoards.add(i);
+    		}
+    	}
+      //validBoards.add(move.getCell()); not needed now since we are making check
+    }
+    else if (boards.get(move.getBoard()).isFull()) {
+    	for(int i = 0; i < size; i++){
+    		if(!boards.get(i).isFull()){
+    			validBoards.add(i);
+    		}
+      }
+    }
+    else{
+    	validBoards.add(move.getCell());
     }
     /* Mutate game state */
     boolean outcome = boards.get(move.getBoard()).play(move);
