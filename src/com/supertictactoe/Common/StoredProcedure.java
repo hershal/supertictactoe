@@ -217,9 +217,9 @@ public class StoredProcedure {
         Map<String, Object> boards_won = new LinkedHashMap<String, Object>();
         for (int i=0; i<game.boards.size(); ++i) {
             if (game.boards.get(i).isWon()) {
-                Side owner = game.boards.get(i).getOwner();
-                if (owner != null) {
-                    boards_won.put(""+i, SPStringifySide(owner));
+                Side winner = game.boards.get(i).getWinner();
+                if (winner != null) {
+                    boards_won.put(""+i, SPStringifySide(winner));
                 }
             }
         }
