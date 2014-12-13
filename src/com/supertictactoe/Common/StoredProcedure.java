@@ -231,7 +231,7 @@ public class StoredProcedure {
             System.out.println("AVAIL BOARD: " + i);
         }
         
-        String game_winner = SPStringifySide(game.getOwner());
+        String game_winner = SPStringifySide(game.getWinner());
         
         data.put(kGameStateBoardsWon, boards_won);
         data.put(kGameStateBoardsAvail, boards_avail);

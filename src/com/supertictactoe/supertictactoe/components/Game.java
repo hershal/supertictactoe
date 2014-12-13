@@ -9,6 +9,7 @@ import com.supertictactoe.supertictactoe.components.Contender.Side;
 public class Game implements Winnable, Matchable {
 
   private Side owner = Side.NIL;
+  private Side winner = Side.NIL;
   private int size;
 
   /* Each game contains boards. Each board contains cells. */
@@ -73,13 +74,19 @@ public class Game implements Winnable, Matchable {
   /* Side effect: updates owner */
   @Override
   public boolean isWon() {
+
+    if (winner != Side.NIL) { return true; }
+
     ArrayList<ArrayList<List<Integer>>> winningLines = new ArrayList<ArrayList<List<Integer>>>();
     winningLines.add(generateDiagonalMatches());
     winningLines.add(generateVerticalMatches());
     winningLines.add(generateHorizontalMatches());
     for(ArrayList<List<Integer>> matchSection : winningLines) {
       for(List<Integer> line : matchSection) {
-	if (isWinningLine(line)) {return true;}
+	if (isWinningLine(line)) {
+          winner = owner;
+          return true;
+        }
       }
     }
     return false;
@@ -143,6 +150,11 @@ public class Game implements Winnable, Matchable {
     /* Mutate game state */
     boolean outcome = boards.get(move.getBoard()).play(move);
     return outcome;
+  }
+
+  public Side getWinner() {
+    isWon();
+    return winner;
   }
 
   public Side getOwner() {

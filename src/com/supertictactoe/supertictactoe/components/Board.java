@@ -96,11 +96,9 @@ public class Board implements Winnable, Matchable {
     for(int cell : line) {
       if (cells.get(cell).getOwner() != possibleWinner) {return false;}
     }
-    if (possibleWinner != Side.NIL) {
-      owner = possibleWinner;
-      return true;
-    }
-    return false;
+
+    if (possibleWinner != Side.NIL) {owner = possibleWinner;}
+    return possibleWinner != Side.NIL;
   }
 
   @Override
