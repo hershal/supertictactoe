@@ -123,11 +123,11 @@ public class Game implements Winnable, Matchable {
   // TODO: implement
   @Override
   public boolean play(Move move) {
-    if(!isLegalMove(move)) {return false;}
+    if(!isLegalMove(move) || isWon()) {return false;}
     /* Constrain the next turn's valid boards */
     validBoards = new ArrayList<Integer>();
     
-    //This will check to see if we are playing in a board that is won
+    //This will check to see if we are playing in a board that is full
     if (!boards.get(move.getCell()).isFree()) {
     	//For every board that is not full, add it to the list
     	for(int i = 0; i < size; i++){
@@ -143,9 +143,8 @@ public class Game implements Winnable, Matchable {
     			validBoards.add(i);
     		}
       }
-    }
-    else{
-    	validBoards.add(move.getCell());
+    } else {
+      validBoards.add(move.getCell());
     }
     /* Mutate game state */
     boolean outcome = boards.get(move.getBoard()).play(move);
