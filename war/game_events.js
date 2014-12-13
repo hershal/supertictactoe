@@ -6,6 +6,7 @@ function play_move(game_url, player, id_outer, id_inner) {
 
               console.log("player: " + response);
               if (js.success == "true") {
+                  enabled = true;
                   if (document.getElementById("opponentRadioAI").checked) {
                       /* console.log("play_move: calling play_move_ai"); */
                       play_move_ai(game_url, player, 0);

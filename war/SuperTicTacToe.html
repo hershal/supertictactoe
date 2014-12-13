@@ -175,6 +175,7 @@
          var game_seat_self = "Human";
 
          var game_winner = null;
+         var enabled = true;
 
          document.getElementById("session-id-input").value = game_ref.name();
 
@@ -369,9 +370,10 @@
              }
              var pos = get_mouse_pos(canvas, evt);
              var cellAt = sb1.get_cell_at(pos.x, pos.y);
-             if (cellAt != null) {
+             if (cellAt != null && enabled == true) {
                  play_move(game_ref.toString(), self_player,
                            cellAt.id_outer, cellAt.id_inner);
+                 enabled = false;
              }
              sb1.draw(ctx);
          }, false);
