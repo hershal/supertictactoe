@@ -16,7 +16,7 @@ function get_current_session_id() {
 
 function init_session_id() {
 
-    var ref = new Firebase('https://sizzling-torch-8770.firebaseIO.com/');
+    var ref = new Firebase('https://sizzling-torch-8770.firebaseIO.com/games');
     var hash = get_current_session_id();
 
     if (hash) {

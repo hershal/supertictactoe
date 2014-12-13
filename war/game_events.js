@@ -79,7 +79,42 @@ function handle_session_jump_input() {
 function handle_reset_button() {
 
     game_ref.remove();
+    game_random_ref.remove();
     window.location.reload();
+}
+
+function handle_allow_rand_checkbox() {
+
+    if (document.getElementById("allow_random_checkbox").checked == true) {
+        if (is_only_player(self_player) == true) {
+            game_random_ref.set(game_random_ref.name());
+            game_state.child("allow_random").set("1");
+            console.log("random game ref created " + game_random_ref.name());
+        } else {
+            document.getElementById("allow_random_checkbox").checked = false;
+            console.log("can't allow random players, already have two players");
+        }
+    } else {
+        game_state.child("allow_random").remove();
+        game_random_ref.remove();
+        console.log("random game ref deleted " + game_random_ref.name());
+    }
+}
+
+function handle_random_game_button() {
+
+    game_random_ref.parent().once('value', function(snap) {
+        if (snap.hasChildren()) {
+            snap.forEach(function(ss) {
+                if (ss.val() != get_current_session_id()) {
+                    jump_to_session(ss.val());
+                }
+            });
+        } else {
+            jump_to_session(game_ref.push().name());
+        }
+    });
+
 }
 
 function set_self_to_current_player() {
@@ -105,4 +140,16 @@ function enable_single_player() {
 
     $("#opponentRadioAI").prop("disabled", false);
     $("#opponentRadioSelf").prop("disabled", false);
+}
+
+function disable_allow_random() {
+
+    $("#allow_random_checkbox").prop("disabled", true);
+    game_random_ref.remove();
+}
+
+function enable_allow_random() {
+
+    $("#allow_random_checkbox").prop("disabled", false);
+    game_random_ref.set(game_random_ref.name());
 }

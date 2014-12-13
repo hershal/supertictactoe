@@ -48,6 +48,7 @@
                 <div class="navbar-collapse collapse navbar-inverse-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a onclick="js: handle_session_jump_input()">Jump to Game</a></li>
+                        <li><a onclick="js: handle_random_game_button()">Random Game</a></li>
                         <li><a onclick="js: handle_reset_button()">Reset Game</a></li>
                     </ul>
                     <form class="navbar-form navbar-right" onSubmit="js:handle_session_jump_input()">
@@ -95,6 +96,11 @@
                                         </div>
                                         <div class="radio">
                                             <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" onclick="js:handle_self_button_press()">Self</label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="allow_random_checkbox" onclick="js:handle_allow_rand_checkbox()">Allow Random Players
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -162,6 +168,7 @@
          window.onhashchange = hash_changed;
 
          var game_ref = init_session_id();
+         var game_random_ref = game_ref.parent().parent().child("avail_random_games/" + game_ref.name());
          var game_moves = game_ref.child("moves");
          var game_state = game_ref.child("state");
          var game_seat = game_ref.child("seats");
@@ -193,6 +200,7 @@
          var sb1 = new superboard(160, 10, 500, 400);
 
          $('input[name$="opponentRadios"]').change(function(){
+
              last_radio = $(this).val();
 
              /* Why do I need this? */
@@ -203,6 +211,7 @@
          });
 
          game_moves.on('child_added', function(snapshot) {
+
              var pkg = snapshot.val();
              if ((pkg.id_inner != null) && (pkg.id_outer != null) && (pkg.player != null)) {
                  sb1.get_cell(pkg.id_outer, pkg.id_inner).set_occupant(pkg.player);
@@ -239,22 +248,30 @@
                  disable_single_player();
              }
 
+             /* handle_allow_rand_checkbox(); */
+
              c1.set_occupant(self_player);
              c1.draw(p_ctx);
          });
 
          game_seat.on('child_added', function(snapshot) {
+
              /* When another human has been added switch to that */
              if (!is_only_player(self_player)) {
                  disable_single_player();
+                 disable_allow_random();
              }
+             /* handle_allow_rand_checkbox(); */
          });
 
          game_seat.on('child_removed', function(snapshot) {
+
              enable_single_player();
+             enable_allow_random();
          });
 
          game_state.on('value', function(snapshot) {
+
              var pkg = snapshot.val();
              player_highlight = (snapshot.child("current_player").val() || "x");
 
@@ -270,6 +287,16 @@
 
              var game_state_boards_avail = game_state.child("boards_avail");
              var game_state_boards_won = game_state.child("boards_won");
+             var game_state_allow_rand_checkbox_ref = game_state.child("allow_random");
+             var game_state_allow_rand_checkbox = null;
+
+             game_state_allow_rand_checkbox_ref.once('value', function(ss) {
+                 game_state_allow_rand_checkbox = ss.val();
+             });
+
+             document.getElementById("allow_random_checkbox").checked = game_state_allow_rand_checkbox == "1" ? true : false;
+             console.log("ALLOWED RAND: " + game_state_allow_rand_checkbox);
+
              sb1.reset_highlights();
 
              game_state_boards_won.on("value", function(snap) {
@@ -277,16 +304,19 @@
                      sb1.boards[ss.name()].set_winner(ss.val());
                  });
              });
+
              game_state_boards_avail.once("value", function(snap) {
                  snap.forEach(function(ss) {
                      sb1.highlight_board(ss.val(), player_highlight);
                  });
              });
+
              sb1.draw(ctx);
          });
 
          var oldCellAt = null;
          canvas.addEventListener('mousemove', function(evt) {
+
              var pos = get_mouse_pos(canvas, evt);
 
              if (oldCellAt != null) {
@@ -302,6 +332,7 @@
          }, false);
 
          canvas.addEventListener('mousedown', function(evt) {
+
              if (self_player != player_highlight) {
                  /* alert("PLACEHOLDER:\nIt's not your turn.\ncurrent_player: " + player_highlight + " you: " + self_player); */
                  return;
