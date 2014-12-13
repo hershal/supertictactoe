@@ -230,9 +230,12 @@ public class StoredProcedure {
             boards_avail.put(""+j++, ""+i);
             System.out.println("AVAIL BOARD: " + i);
         }
-
+        
+        String gameWon = game.isWon() ? "1" : "0";
+        
         data.put(kGameStateBoardsWon, boards_won);
         data.put(kGameStateBoardsAvail, boards_avail);
+        data.put(kGameStateWon, gameWon);
 
         FirebaseResponse resp = null;
         try {
