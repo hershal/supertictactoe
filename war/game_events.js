@@ -2,11 +2,14 @@ function play_move(game_url, player, id_outer, id_inner) {
 
     $.get('PlayerMove', {game_url:game_url, player:player, id_inner:id_inner, id_outer:id_outer},
           function(response) {
+
+              /* Enable the board when a response is received */
+              enabled = true;
+
               var js = JSON.parse(response);
 
               console.log("player: " + response);
               if (js.success == "true") {
-                  enabled = true;
                   if (document.getElementById("opponentRadioAI").checked) {
                       /* console.log("play_move: calling play_move_ai"); */
                       play_move_ai(game_url, player, 0);
