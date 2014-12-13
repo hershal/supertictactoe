@@ -78,8 +78,8 @@ function handle_session_jump_input() {
 
 function handle_reset_button() {
 
-    game_ref.remove();
     game_random_ref.remove();
+    game_ref.remove();
     window.location.reload();
 }
 

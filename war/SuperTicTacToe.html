@@ -225,6 +225,10 @@
              window.location.reload();
          });
 
+         game_ref.on('child_removed', function(snapshot) {
+             window.location.reload();
+         });
+
          game_seat.once('value', function(snapshot) {
 
              snapshot.forEach(function(snap) {
