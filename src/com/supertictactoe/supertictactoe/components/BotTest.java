@@ -1,14 +1,16 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import junit.framework.TestCase;
-import com.supertictactoe.supertictactoe.components.StrategyFactory.StrategyType;
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+
+import components.Contender.Side;
+import components.StrategyFactory.StrategyType;
 
 public class BotTest extends TestCase {
 
   private Bot b;
 
   protected void setUp() throws Exception {
+    super.setUp();
     this.b = new Bot(Side.O, StrategyType.RANDOM);
   }
 

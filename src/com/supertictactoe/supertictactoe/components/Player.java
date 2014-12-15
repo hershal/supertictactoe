@@ -1,4 +1,4 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 public class Player extends Contender {
   public Player(Side x) {super(x);}

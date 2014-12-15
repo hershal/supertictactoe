@@ -1,42 +1,42 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import components.Contender.Side;
 
 public class Cell implements Winnable {
 
-  private Side owner;
+  private Side winner;
 
   public Cell() {
-    owner = Side.NIL;
+    winner = Side.NIL;
   }
 
   @Override
   public boolean isWon() {
-    return owner != Side.NIL;
+    return winner != Side.NIL;
   }
 
   @Override
-  public boolean isFree() {
-    return !isWon();
+  public boolean isFull() {
+    return isWon();
   }
 
   /** @return the ownerS */
-  public Side getOwner() {
-    return owner;
+  public Side getWinner() {
+    return winner;
   }
 
   /** @param owner the owner to set */
-  public void setOwner(Side owner) {
-    this.owner = owner;
+  public void setWinner(Side winner) {
+    this.winner = winner;
   }
 
   public String toString() {
-    if (owner == Side.NIL) {return "-";}
-    return owner.toString();
+    if (winner == Side.NIL) {return "-";}
+    return winner.toString();
   }
 
   public boolean play(Move move) {
-    owner = move.getSide();
+    winner = move.getSide();
     return true;
   }
 }

@@ -1,14 +1,13 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import components.Contender.Side;
 
 public class StrategyRandom implements Strategy {
 
   public Move nextMove(Game game) {
-    int board;
+    int board, cell;
     do {board = getNextBoard(game);}
     while (!game.validBoards().contains(board));
-    int cell;
     do {cell = getNextCell(game, board);}
     while (!game.boards.get(board).validCells().contains(cell));
     return new Move(board, cell, Side.NIL);

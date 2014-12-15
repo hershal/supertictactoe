@@ -1,6 +1,6 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
-import com.supertictactoe.supertictactoe.components.StrategyFactory.StrategyType;
+import components.StrategyFactory.StrategyType;
 
 public class Bot extends Contender {
 
@@ -30,9 +30,6 @@ public class Bot extends Contender {
   }
 
   public Move nextMove(Game game) {
-    Move move = strategy.nextMove(game);
-    move.setSide(this.getTeam());
-    System.out.println("BOT: calculated move is " + move);
-    return move;
+    return strategy.nextMove(game).setSide(this.getTeam());
   }
 }

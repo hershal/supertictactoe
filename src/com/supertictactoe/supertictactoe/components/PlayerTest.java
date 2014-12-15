@@ -1,13 +1,14 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import junit.framework.TestCase;
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import components.Contender.Side;
 
 public class PlayerTest extends TestCase {
 
   private Player p;
 
-  protected void setUp() {
+  protected void setUp() throws Exception {
+    super.setUp();
     this.p = new Player(Side.X);
   }
 

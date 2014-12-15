@@ -1,14 +1,13 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import components.Contender.Side;
 
 public class Board implements Winnable, Matchable {
 
-  private Side owner = Side.NIL;
   private Side winner = Side.NIL;
 
   /* Each board contains cells. Each game contains boards. */
@@ -83,7 +82,7 @@ public class Board implements Winnable, Matchable {
     for(ArrayList<List<Integer>> matchSection : winningLines) {
       for(List<Integer> line : matchSection) {
 	if (isWinningLine(line)) {
-          winner = owner;
+          winner = cells.get(line.get(0)).getWinner();
           return true;
         }
       }
@@ -91,19 +90,37 @@ public class Board implements Winnable, Matchable {
     return false;
   }
 
-  private boolean isWinningLine(List<Integer> line) {
-    Side possibleWinner = cells.get(line.get(0)).getOwner();
-    for(int cell : line) {
-      if (cells.get(cell).getOwner() != possibleWinner) {return false;}
-    }
+  public boolean isAlmostWon(Side side) {
+    ArrayList<ArrayList<List<Integer>>> winningLines = new ArrayList<ArrayList<List<Integer>>>();
+    winningLines.add(generateDiagonalMatches());
+    winningLines.add(generateVerticalMatches());
+    winningLines.add(generateHorizontalMatches());
+    for(ArrayList<List<Integer>> matchSection : winningLines)
+      for(List<Integer> line : matchSection)
+	if (isAlmostWinningLine(line))
+          return winner == side;
+    return false;
+  }
 
-    if (possibleWinner != Side.NIL) {owner = possibleWinner;}
+  private boolean isWinningLine(List<Integer> line) {
+    Side possibleWinner = cells.get(line.get(0)).getWinner();
+    for(int cell : line)
+      if (cells.get(cell).getWinner() != possibleWinner)
+	return false;
+    if (possibleWinner != Side.NIL) {winner = possibleWinner;}
     return possibleWinner != Side.NIL;
   }
 
-  @Override
-  public boolean isFree() {
-    return !isWon();
+  private boolean isAlmostWinningLine(List<Integer> line) {
+    boolean strike = false;
+    Side possibleWinner = cells.get(line.get(0)).getWinner();
+    for(int cell : line) {
+      if (cells.get(cell).getWinner() != possibleWinner) {
+	if (!strike) { strike = true; }
+	else { return false; }
+      }
+    }
+    return possibleWinner != Side.NIL && strike;
   }
 
   public String toString() {
@@ -140,28 +157,30 @@ public class Board implements Winnable, Matchable {
     return winner;
   }
 
-  public Side getOwner() {
-    isWon();
-    return owner;
-  }
-
-  public void setOwner(Side owner) {
-    this.owner = owner;
+  public void setWinner(Side winner) {
+    this.winner = winner;
   }
 
   @Override
   public boolean play(Move move) {
-    owner = move.getSide();
     cells.get(move.getCell()).play(move);
     return true;
   }
-  
+
+  @Override
   public boolean isFull(){
-	  for(int c=0; c < cells.size(); ++c){
-		  if (!cells.get(c).isWon()){
-			  return false;
-		  }
-	  }
-	  return true;
+    for(int c=0; c < cells.size(); ++c)
+      if (!cells.get(c).isWon())
+	return false;
+    return true;
   }
+
+public Side getAlmostWinner(List<Integer> line) {
+	for(int i=0; i < line.size(); ++i) {
+		if (cells.get(line.get(i)).getWinner() != Side.NIL) {
+			return cells.get(line.get(i)).getWinner();
+			}
+	}
+	return Side.NIL;
+}
 }

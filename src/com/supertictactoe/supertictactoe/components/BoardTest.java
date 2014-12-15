@@ -1,4 +1,4 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,12 +6,13 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import components.Contender.Side;
 
 public class BoardTest extends TestCase {
   private Board b;
 
   protected void setUp() throws Exception {
+    super.setUp();
     b = new Board(9);
   }
 
@@ -46,31 +47,30 @@ public class BoardTest extends TestCase {
     assertEquals(horizontals, b.generateHorizontalMatches());
   }
 
-  public void testGetOwner() {
-    assertEquals(Side.NIL, b.getOwner());
+  public void testGetWinner() {
+    assertEquals(Side.NIL, b.getWinner());
     // take ownership of the board down a diagonal
-    b.cells.get(0).setOwner(Side.X);
-    b.cells.get(4).setOwner(Side.X);
-    b.cells.get(8).setOwner(Side.X);
-    assertEquals(Side.X, b.getOwner());
+    b.cells.get(0).setWinner(Side.X);
+    b.cells.get(4).setWinner(Side.X);
+    b.cells.get(8).setWinner(Side.X);
+    assertEquals(Side.X, b.getWinner());
   }
 
   public void testIsWon() {
     assertEquals(false, b.isWon());
     // take ownership of the board down a diagonal
-    b.cells.get(0).setOwner(Side.X);
-    b.cells.get(4).setOwner(Side.X);
-    b.cells.get(8).setOwner(Side.X);
+    b.cells.get(0).setWinner(Side.X);
+    b.cells.get(4).setWinner(Side.X);
+    b.cells.get(8).setWinner(Side.X);
     assertEquals(true, b.isWon());
   }
 
-  public void testIsFree() {
-    assertEquals(true, b.isFree());
-    // take ownership of the board down a diagonal
-    b.cells.get(0).setOwner(Side.X);
-    b.cells.get(4).setOwner(Side.X);
-    b.cells.get(8).setOwner(Side.X);
-    assertEquals(false, b.isFree());
+  public void testIsFull() {
+    assertEquals(false, b.isFull());
+    // take ownership of the board 
+    for(int i=0; i<b.cells.size(); ++i)
+    	b.cells.get(i).setWinner(Side.X);
+    assertEquals(true, b.isFull());
   }
 
 }
