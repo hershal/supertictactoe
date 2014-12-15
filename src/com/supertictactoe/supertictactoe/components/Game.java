@@ -8,8 +8,6 @@ import components.Contender.Side;
 
 public class Game implements Winnable, Matchable {
 
-  // TODO: how are these different?a
-  private Side owner = Side.NIL;
   private Side winner = Side.NIL;
   private int size;
 
@@ -80,7 +78,6 @@ public class Game implements Winnable, Matchable {
     return winningLines;
   }
 
-  /* Side effect: updates owner */
   @Override
   public boolean isWon() {
     if (winner != Side.NIL) { return true; }
@@ -90,8 +87,19 @@ public class Game implements Winnable, Matchable {
       for(List<Integer> line : matchSection) {
 	if (isWinningLine(line)) {
 	  winner = boards.get(line.get(0)).getWinner();
-	  owner = boards.get(line.get(0)).getWinner();
 	  return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean isAlmostWon(Side side) {
+    ArrayList<ArrayList<List<Integer>>> winningLines = generateWinningLines();
+    for(ArrayList<List<Integer>> matchSection : winningLines) {
+      for(List<Integer> line : matchSection) {
+	if (isAlmostWinningLine(line)) {
+	  return side == boards.get(line.get(0)).getAlmostWinner(line);
         }
       }
     }
@@ -100,9 +108,7 @@ public class Game implements Winnable, Matchable {
 
   public String winners(List<Integer> line) {
     String out = "";
-    for (int board : line) {
-      out += boards.get(board).getWinner() + " ";
-    }
+    for (int board : line) out += boards.get(board).getWinner() + " ";
     return out.trim();
   }
 
@@ -114,10 +120,20 @@ public class Game implements Winnable, Matchable {
 	return false;
       }
     }
-    if (possibleWinner != Side.NIL) {
-      owner = possibleWinner;
-    }
+    if (possibleWinner != Side.NIL) {winner = possibleWinner;}
     return possibleWinner != Side.NIL;
+  }
+
+  private boolean isAlmostWinningLine(List<Integer> line) {
+    boolean strike = false;
+    Side possibleWinner = boards.get(line.get(0)).getWinner();
+    for (int board : line) {
+      if ((boards.get(board).getWinner() != possibleWinner) || (!boards.get(board).isWon())) {
+	if (!strike) {strike = true;}
+	else {return false;}
+      }
+    }
+    return possibleWinner != Side.NIL && strike;
   }
 
   @Override
@@ -201,11 +217,6 @@ public class Game implements Winnable, Matchable {
   public Side getWinner() {
     isWon();
     return winner;
-  }
-
-  public Side getOwner() {
-    isWon();
-    return owner;
   }
 
   public boolean isLegalMove(Move move) {

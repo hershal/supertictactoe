@@ -48,13 +48,13 @@ public class GameTest extends TestCase {
     assertEquals(horizontals, game.generateHorizontalMatches());
   }
 
-  public void testGetOwner() {
-    assertEquals(Side.NIL, game.getOwner());
+  public void testGetWinner() {
+    assertEquals(Side.NIL, game.getWinner());
     // take ownership of the board down a diagonal
     game.boards.get(0).setWinner(Side.X);
     game.boards.get(4).setWinner(Side.X);
     game.boards.get(8).setWinner(Side.X);
-    assertEquals(Side.X, game.getOwner());
+    assertEquals(Side.X, game.getWinner());
   }
 
   public void testIsWon() {
