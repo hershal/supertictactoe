@@ -1,14 +1,13 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import components.Contender.Side;
 
 public class Board implements Winnable, Matchable {
 
-  private Side owner = Side.NIL;
   private Side winner = Side.NIL;
 
   /* Each board contains cells. Each game contains boards. */
@@ -83,7 +82,7 @@ public class Board implements Winnable, Matchable {
     for(ArrayList<List<Integer>> matchSection : winningLines) {
       for(List<Integer> line : matchSection) {
 	if (isWinningLine(line)) {
-          winner = owner;
+          winner = cells.get(line.get(0)).getWinner();
           return true;
         }
       }
@@ -92,18 +91,13 @@ public class Board implements Winnable, Matchable {
   }
 
   private boolean isWinningLine(List<Integer> line) {
-    Side possibleWinner = cells.get(line.get(0)).getOwner();
+    Side possibleWinner = cells.get(line.get(0)).getWinner();
     for(int cell : line) {
-      if (cells.get(cell).getOwner() != possibleWinner) {return false;}
+      if (cells.get(cell).getWinner() != possibleWinner) {return false;}
     }
 
-    if (possibleWinner != Side.NIL) {owner = possibleWinner;}
+    if (possibleWinner != Side.NIL) {winner = possibleWinner;}
     return possibleWinner != Side.NIL;
-  }
-
-  @Override
-  public boolean isFree() {
-    return !isWon();
   }
 
   public String toString() {
@@ -140,28 +134,21 @@ public class Board implements Winnable, Matchable {
     return winner;
   }
 
-  public Side getOwner() {
-    isWon();
-    return owner;
-  }
-
-  public void setOwner(Side owner) {
-    this.owner = owner;
+  public void setWinner(Side winner) {
+    this.winner = winner;
   }
 
   @Override
   public boolean play(Move move) {
-    owner = move.getSide();
     cells.get(move.getCell()).play(move);
     return true;
   }
-  
+
+  @Override
   public boolean isFull(){
-	  for(int c=0; c < cells.size(); ++c){
-		  if (!cells.get(c).isWon()){
-			  return false;
-		  }
-	  }
-	  return true;
+    for(int c=0; c < cells.size(); ++c)
+      if (!cells.get(c).isWon())
+	return false;
+    return true;
   }
 }

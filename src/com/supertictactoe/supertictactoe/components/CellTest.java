@@ -1,32 +1,34 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import junit.framework.TestCase;
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+
+import components.Contender.Side;
 
 public class CellTest extends TestCase {
 
   private Cell c;
 
   protected void setUp() throws Exception {
+    super.setUp();
     c = new Cell();
   }
 
   public void testIsWon() {
     assertEquals(false, c.isWon());
-    c.setOwner(Side.X);
+    c.setWinner(Side.X);
     assertEquals(true, c.isWon());
   }
 
-  public void testIsFree() {
-    assertEquals(true, c.isFree());
-    c.setOwner(Side.O);
-    assertEquals(false, c.isFree());
+  public void testIsFull() {
+    assertEquals(false, c.isFull());
+    c.setWinner(Side.O);
+    assertEquals(true, c.isFull());
   }
 
-  public void testGetOwner() {
-    assertEquals(Side.NIL, c.getOwner());
-    c.setOwner(Side.O);
-    assertEquals(Side.O, c.getOwner());
+  public void testGetWinner() {
+    assertEquals(Side.NIL, c.getWinner());
+    c.setWinner(Side.O);
+    assertEquals(Side.O, c.getWinner());
   }
 
 }

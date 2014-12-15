@@ -1,4 +1,4 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import java.util.ArrayList;
 import java.util.List;

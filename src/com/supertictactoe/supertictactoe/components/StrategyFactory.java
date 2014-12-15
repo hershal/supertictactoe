@@ -1,4 +1,4 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 public class StrategyFactory {
 

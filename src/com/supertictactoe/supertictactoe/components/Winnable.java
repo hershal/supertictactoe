@@ -1,10 +1,8 @@
-package com.supertictactoe.supertictactoe.components;
-
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+package components;
 
 public interface Winnable {
   public boolean play(Move move);
   public boolean isWon();
-  public boolean isFree();
+  public boolean isFull();
   // TODO: determine what is being compared in public boolean isSameWinner(ArrayList);
 }

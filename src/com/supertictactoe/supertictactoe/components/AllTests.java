@@ -1,4 +1,4 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -14,6 +14,7 @@ public class AllTests {
     suite.addTestSuite(BoardTest.class);
     suite.addTestSuite(GameTest.class);
     suite.addTestSuite(StrategyRandomTest.class);
+    suite.addTestSuite(StrategyPerfectTest.class);
     //$JUnit-END$
     return suite;
   }

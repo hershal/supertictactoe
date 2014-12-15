@@ -1,4 +1,4 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,13 +6,14 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import components.Contender.Side;
 
 public class GameTest extends TestCase {
 
   private Game game;
 
   protected void setUp() throws Exception {
+    super.setUp();
     game = new Game(9);
   }
 
@@ -50,28 +51,23 @@ public class GameTest extends TestCase {
   public void testGetOwner() {
     assertEquals(Side.NIL, game.getOwner());
     // take ownership of the board down a diagonal
-    game.boards.get(0).setOwner(Side.X);
-    game.boards.get(4).setOwner(Side.X);
-    game.boards.get(8).setOwner(Side.X);
+    game.boards.get(0).setWinner(Side.X);
+    game.boards.get(4).setWinner(Side.X);
+    game.boards.get(8).setWinner(Side.X);
     assertEquals(Side.X, game.getOwner());
   }
 
   public void testIsWon() {
     assertEquals(false, game.isWon());
     // take ownership of the board down a diagonal
-    game.boards.get(0).setOwner(Side.X);
-    game.boards.get(4).setOwner(Side.X);
-    game.boards.get(8).setOwner(Side.X);
+    game.boards.get(0).setWinner(Side.X);
+    game.boards.get(4).setWinner(Side.X);
+    game.boards.get(8).setWinner(Side.X);
     assertEquals(true, game.isWon());
   }
 
-  public void testIsFree() {
-    assertEquals(true, game.isFree());
-    // take ownership of the board down a diagonal
-    game.boards.get(0).setOwner(Side.X);
-    game.boards.get(4).setOwner(Side.X);
-    game.boards.get(8).setOwner(Side.X);
-    assertEquals(false, game.isFree());
+  public void testIsFull() {
+    assertEquals(false, game.isFull());
   }
 
   public void testPlay() {

@@ -1,6 +1,6 @@
-package com.supertictactoe.supertictactoe.components;
+package components;
 
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import components.Contender.Side;
 
 public class Move {
   /* Both boards and tiles are numbered left -> right, top -> down. */
@@ -55,8 +55,9 @@ public class Move {
    * @param side
    *            the side to set
    */
-  public void setSide(Side side) {
+  public Move setSide(Side side) {
     this.side = side;
+    return this;
   }
 
   public String toString() {
