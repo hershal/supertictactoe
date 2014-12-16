@@ -54,10 +54,15 @@ public class AIMoveServlet extends HttpServlet {
         try {
             Firebase firebase = new Firebase(game_url);
             
-            /* TODO: CHANGE THIS TO PERFECT_WITH_THRESHOLD */
-            Bot bot = new Bot(SPGetOpposingSide(SPBuildContender(player_just_played).getTeam()),
+            Bot bot;
+
+            if (ai_difficulty > 0) {
+                bot = new Bot(SPGetOpposingSide(SPBuildContender(player_just_played).getTeam()),
+                              StrategyType.PERFECT);
+            } else {
+                bot = new Bot(SPGetOpposingSide(SPBuildContender(player_just_played).getTeam()),
                               StrategyType.RANDOM);
-            /* END TODO */
+            }
 
             Game gm = SPParseFirebase(firebase);
             Move move = bot.nextMove(gm);

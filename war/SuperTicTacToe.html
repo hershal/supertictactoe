@@ -89,10 +89,18 @@
                                     <p><strong>Opponent:</strong></p>
                                     <div class="container">
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="opponentRadioHuman" value="Human" checked="">Human</label>
+                                            <label><input type="radio" name="opponentRadios" id="opponentRadioHuman" value="Human" onclick="js:handle_human_button_press()" checked="">Human</label>
                                         </div>
                                         <div class="radio">
-                                            <label><input type="radio" name="opponentRadios" id="opponentRadioAI" value="AI" onclick="js:handle_ai_button_press()">AI</label>
+                                          <label><input type="radio" name="opponentRadios" id="opponentRadioAI" value="AI" onclick="js:handle_ai_button_press()">AI</label>
+                                          <div class="container" id="AIRadiosContainer" hidden="true">
+                                              <div class="radio">
+                                                  <label><input type="radio" name="AIRadios" id="AIRadioHaveFun" value="0">Have Fun</label>
+                                              </div>
+                                              <div class="radio">
+                                                  <label><input type="radio" name="AIRadios" id="AIRadioGoodLuck" value="100" checked="">Good Luck</label>
+                                              </div>
+                                          </div>
                                         </div>
                                         <div class="radio">
                                             <label><input type="radio" name="opponentRadios" id="opponentRadioSelf" value="Self" onclick="js:handle_self_button_press()">Self</label>
@@ -248,7 +256,7 @@
                  game_seat_self.onDisconnect().remove();
                  /* alert("PLACEHOLDER:\nplayer is o\n"); */
              } else {
-                 alert("PLACEHOLDER:\nyou are spectating");
+                 /* alert("PLACEHOLDER:\nyou are spectating"); */
              }
 
              if (!is_only_player(self_player)) {

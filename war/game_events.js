@@ -12,7 +12,8 @@ function play_move(game_url, player, id_outer, id_inner) {
               if (js.success == "true") {
                   if (document.getElementById("opponentRadioAI").checked) {
                       /* console.log("play_move: calling play_move_ai"); */
-                      play_move_ai(game_url, player, 0);
+                      var difficulty = $('input[name="AIRadios"]:checked').val();
+                      play_move_ai(game_url, player, difficulty);
                   }
               }
           });
@@ -20,6 +21,8 @@ function play_move(game_url, player, id_outer, id_inner) {
 
 function play_move_ai(game_url, player_just_played, ai_difficulty) {
 
+    console.log("playing move with difficulty: " + ai_difficulty);
+    
     $.get('AIMove', {game_url:game_url, player_just_played:player_just_played, ai_difficulty:ai_difficulty},
           function(response) {
               var js = JSON.parse(response);
@@ -52,10 +55,15 @@ function is_only_player(player) {
 function handle_ai_button_press() {
 
     if (is_only_player(self_player)) {
-        console.log(self_player);
-        console.log(player_highlight);
-        if (self_player != player_highlight) {
-            play_move_ai(game_ref.toString(), self_player, 0);
+        var difficulty = $('input[name="AIRadios"]:checked').val();
+        document.getElementById("AIRadiosContainer").hidden = false;
+        
+        console.log("difficulty: " + difficulty);
+        console.log("self_player: " + self_player + "\nplayer_highlight: " + player_highlight);
+
+        if (self_player == player_highlight) {
+            play_move_ai(game_ref.toString(), get_opposing_player(self_player), difficulty);
+            set_self_to_player(get_opposing_player(self_player));
         }
     } else {
         document.getElementById("opponentRadioHuman").checked = true;
@@ -64,7 +72,14 @@ function handle_ai_button_press() {
     }
 }
 
+function handle_human_button_press() {
+
+    document.getElementById("AIRadiosContainer").hidden = true;
+}
+
 function handle_self_button_press() {
+
+    document.getElementById("AIRadiosContainer").hidden = true;
 
     if (is_only_player(self_player)) {
         set_self_to_current_player();
@@ -123,7 +138,12 @@ function handle_random_game_button() {
 
 function set_self_to_current_player() {
 
-    self_player = player_highlight;
+    set_self_to_player(player_highlight);
+}
+
+function set_self_to_player(player) {
+
+    self_player = player;
     if (self_player == "x") {
         game_seat_self.set({x: "x"})
     } else {
