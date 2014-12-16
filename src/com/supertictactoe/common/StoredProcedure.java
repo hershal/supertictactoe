@@ -1,4 +1,4 @@
-package com.supertictactoe.Common;
+package com.supertictactoe.common;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -17,10 +17,10 @@ import net.thegreshams.firebase4j.service.Firebase;
 import net.thegreshams.firebase4j.error.FirebaseException;
 import net.thegreshams.firebase4j.error.JacksonUtilityException;
 
-import com.supertictactoe.supertictactoe.components.*;
-import com.supertictactoe.supertictactoe.components.Contender.Side;
+import com.supertictactoe.components.*;
+import com.supertictactoe.components.Contender.Side;
 
-import static com.supertictactoe.Common.SuperTicTacToeStrings.*;
+import static com.supertictactoe.common.SuperTicTacToeStrings.*;
 
 public class StoredProcedure {
 

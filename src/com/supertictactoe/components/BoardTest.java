@@ -1,4 +1,4 @@
-package components;
+package com.supertictactoe.components;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import components.Contender.Side;
+import com.supertictactoe.components.Contender.Side;
 
 public class BoardTest extends TestCase {
   private Board b;

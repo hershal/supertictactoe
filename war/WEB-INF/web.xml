@@ -8,7 +8,7 @@
   <!-- Servlets -->
   <servlet>
       <servlet-name>PlayerMoveServlet</servlet-name>
-      <servlet-class>com.supertictactoe.supertictactoe.PlayerMoveServlet</servlet-class>
+      <servlet-class>com.supertictactoe.web.PlayerMoveServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -18,7 +18,7 @@
 
   <servlet>
       <servlet-name>AIMoveServlet</servlet-name>
-      <servlet-class>com.supertictactoe.supertictactoe.AIMoveServlet</servlet-class>
+      <servlet-class>com.supertictactoe.web.AIMoveServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>

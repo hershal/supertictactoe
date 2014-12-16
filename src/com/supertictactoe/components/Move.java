@@ -1,6 +1,6 @@
-package components;
+package com.supertictactoe.components;
 
-import components.Contender.Side;
+import com.supertictactoe.components.Contender.Side;
 
 public class Move {
   /* Both boards and tiles are numbered left -> right, top -> down. */

@@ -1,6 +1,6 @@
-package components;
+package com.supertictactoe.components;
 
-import components.StrategyFactory.StrategyType;
+import com.supertictactoe.components.StrategyFactory.StrategyType;
 
 public class Bot extends Contender {
 

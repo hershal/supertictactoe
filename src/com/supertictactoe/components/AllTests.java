@@ -1,4 +1,4 @@
-package components;
+package com.supertictactoe.components;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

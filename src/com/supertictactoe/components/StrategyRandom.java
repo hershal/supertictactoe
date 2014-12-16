@@ -1,6 +1,6 @@
-package components;
+package com.supertictactoe.components;
 
-import components.Contender.Side;
+import com.supertictactoe.components.Contender.Side;
 
 public class StrategyRandom implements Strategy {
 

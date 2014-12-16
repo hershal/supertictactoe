@@ -1,8 +1,8 @@
-package components;
+package com.supertictactoe.components;
 
 import junit.framework.TestCase;
 
-import components.Contender.Side;
+import com.supertictactoe.components.Contender.Side;
 
 public class CellTest extends TestCase {
 

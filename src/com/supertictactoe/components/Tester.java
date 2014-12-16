@@ -1,7 +1,7 @@
-package com.supertictactoe.supertictactoe.components;
+package com.supertictactoe.components;
 
-import com.supertictactoe.supertictactoe.components.Contender.Side;
-import com.supertictactoe.supertictactoe.components.StrategyFactory.StrategyType;
+import com.supertictactoe.components.Contender.Side;
+import com.supertictactoe.components.StrategyFactory.StrategyType;
 
 public class Tester {
 

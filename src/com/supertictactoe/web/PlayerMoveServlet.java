@@ -1,4 +1,4 @@
-package com.supertictactoe.supertictactoe;
+package com.supertictactoe.web;
 
 import java.io.IOException;
 
@@ -11,9 +11,9 @@ import net.thegreshams.firebase4j.service.Firebase;
 
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
-import com.supertictactoe.supertictactoe.components.*;
+import com.supertictactoe.components.*;
 
-import static com.supertictactoe.Common.StoredProcedure.*;
+import static com.supertictactoe.common.StoredProcedure.*;
 
 public class PlayerMoveServlet extends HttpServlet {
 

@@ -1,4 +1,4 @@
-package com.supertictactoe.Common;
+package com.supertictactoe.common;
 
 public final class SuperTicTacToeStrings {
 

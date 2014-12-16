@@ -1,4 +1,4 @@
-package components;
+package com.supertictactoe.components;
 
 public interface Strategy {
   public Game move(Game game);

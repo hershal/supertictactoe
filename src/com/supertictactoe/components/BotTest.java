@@ -1,9 +1,9 @@
-package components;
+package com.supertictactoe.components;
 
 import junit.framework.TestCase;
 
-import components.Contender.Side;
-import components.StrategyFactory.StrategyType;
+import com.supertictactoe.components.Contender.Side;
+import com.supertictactoe.components.StrategyFactory.StrategyType;
 
 public class BotTest extends TestCase {
 
