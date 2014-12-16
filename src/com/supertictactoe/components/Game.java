@@ -163,6 +163,20 @@ public class Game implements Winnable, Matchable {
     return free;
   }
 
+  public boolean boardIsEmpty(int b) {
+    return boards.get(b).isEmpty();
+  }
+
+  public int boardWithoutXInMiddle() {
+
+    for (int b = 0; b < boards.size(); ++b) {
+      if (boards.get(b).cells.get((boards.size() - 1) / 2).getWinner() != Side.X) {
+        return b;
+      }
+    }
+    return -1;
+  }
+
   public List<Integer> validBoards() {
     if (!validBoards.isEmpty()) {
       return validBoards;

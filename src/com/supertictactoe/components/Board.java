@@ -175,12 +175,21 @@ public class Board implements Winnable, Matchable {
     return true;
   }
 
-public Side getAlmostWinner(List<Integer> line) {
-	for(int i=0; i < line.size(); ++i) {
-		if (cells.get(line.get(i)).getWinner() != Side.NIL) {
-			return cells.get(line.get(i)).getWinner();
-			}
-	}
-	return Side.NIL;
-}
+  public boolean isEmpty(){
+    for(int c=0; c < cells.size(); ++c) {
+      if (cells.get(c).isWon()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public Side getAlmostWinner(List<Integer> line) {
+    for(int i=0; i < line.size(); ++i) {
+      if (cells.get(line.get(i)).getWinner() != Side.NIL) {
+        return cells.get(line.get(i)).getWinner();
+      }
+    }
+    return Side.NIL;
+  }
 }

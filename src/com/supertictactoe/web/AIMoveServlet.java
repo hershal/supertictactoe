@@ -82,6 +82,7 @@ public class AIMoveServlet extends HttpServlet {
                 json.append("id_inner", move.getCell() + "");
             }
             json.write(response.getWriter());
+            return;
         } catch (FirebaseException e) {
             /* STUB */
             e.printStackTrace();

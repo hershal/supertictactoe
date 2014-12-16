@@ -49,7 +49,6 @@ public class StrategyPerfect implements Strategy {
 
   protected int boardWithFreeMiddle;
   protected int boardOppositeBWFM;
-  protected boolean initialized = false;
 
   public Move nextMove(Game game) {
     /**
@@ -57,15 +56,22 @@ public class StrategyPerfect implements Strategy {
      */
     final Side team = Side.X;
     final int mid = game.getMiddle();
+
+    /* TODO: Select smarter valid_board, i.e. when game.validBoards() > 1,
+     * then pick board opposite BWFM? */
+
     int valid_board = game.validBoards().get(0);
     if(game.cellIsValid(mid, mid)) { return positionOfPower(game).setSide(team); }
     // Phase I : if >1 middle cells are free, take the middle cell of valid_board
     if (game.num_boards_with_free_middle() > 1) {
       return new Move(valid_board, mid, team);
-    } else if (game.num_boards_with_free_middle() == 1 && !initialized) {
-      initializeGlobals(valid_board, mid);
-      return new Move(boardWithFreeMiddle, boardWithFreeMiddle, team);
+    } else if ((game.num_boards_with_free_middle() == 1) &&
+               (game.boardIsEmpty(valid_board))) {
+        return new Move(valid_board, valid_board, team);
     }
+
+    /* WARNING: This is PROCEDURAL CODE */
+    initializeGlobals(game, mid);
     // if we haven't returned yet, all the middles are taken and we are in
     // Phase II : force opponent into the same cell again, or the opposing edge cell
     if (game.validBoards().size() > 1 || // we landed in the middle (full) board
@@ -98,8 +104,8 @@ public class StrategyPerfect implements Strategy {
 
       // Final legality check
       if(!game.cellIsValid(move.getBoard(), move.getCell())) {
-	System.err.println("Invalid move: " + move);
-	      System.exit(-1);
+        System.err.println("Invalid move: " + move);
+              System.exit(-1);
       }
     return move;
   }
@@ -108,10 +114,9 @@ public class StrategyPerfect implements Strategy {
     return new Move(game.getMiddle(), game.getMiddle(), Side.NIL);
   }
 
-  protected void initializeGlobals(int valid_board, int mid) {
-    boardWithFreeMiddle = valid_board;
+  protected void initializeGlobals(Game game, int mid) {
+    boardWithFreeMiddle = game.boardWithoutXInMiddle();
     boardOppositeBWFM = mid - (boardWithFreeMiddle - mid);
-    initialized = true;
   }
 
   public Game move(Game game) {
