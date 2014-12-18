@@ -63,6 +63,7 @@ public class Main extends HttpServlet {
 
     context.setContextPath("/");
     context.setResourceBase("./war");
+    context.setWelcomeFiles(new String[]{"SuperTicTacToe.html"});
 
     server.setHandler(context);
     context.addServlet(new ServletHolder(new Main()), "/Main");
