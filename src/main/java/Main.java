@@ -2,6 +2,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.*;
 import org.eclipse.jetty.servlet.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -61,10 +62,13 @@ public class Main extends HttpServlet {
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
     context.setContextPath("/");
+    context.setResourceBase("./war");
+
     server.setHandler(context);
-    context.addServlet(new ServletHolder(new Main()),"/Main");
+    context.addServlet(new ServletHolder(new Main()), "/Main");
     context.addServlet(new ServletHolder(new AIMoveServlet()), "/AIMove");
     context.addServlet(new ServletHolder(new PlayerMoveServlet()), "/PlayerMove");
+    context.addServlet(new ServletHolder(new DefaultServlet()), "/*");
 
     server.start();
     server.join();
