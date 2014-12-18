@@ -99,9 +99,9 @@ public class StoredProcedure {
                         while (moveIter.hasNext()) {
                             Entry<String, Object> movePair = moveIter.next();
                             if (movePair.getKey().equals(kGameMovesIDOuter)) {
-                                id_outer = (int) movePair.getValue();
+                                id_outer = (Integer) movePair.getValue();
                             } else if (movePair.getKey().equals(kGameMovesIDInner)) {
-                                id_inner = (int) movePair.getValue();
+                                id_inner = (Integer) movePair.getValue();
                             } else if (movePair.getKey().equals(kGameMovesPlayer)) {
                                 player = (String) movePair.getValue();
                             } else if (movePair.getKey().equals(kGameMovesTimestamp)) {
