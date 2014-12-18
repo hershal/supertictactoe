@@ -1,3 +1,5 @@
+package com.supertictactoe.web;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -6,7 +8,6 @@ import org.eclipse.jetty.servlet.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
-import com.supertictactoe.web.*;
 
 public class Main extends HttpServlet {
   @Override
