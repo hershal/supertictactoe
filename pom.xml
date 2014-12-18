@@ -12,6 +12,18 @@
   <dependencies>
         <!-- Compile/runtime dependencies -->
         <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-servlet</artifactId>
+          <version>7.6.0.v20120127</version>
+        </dependency>
+        <!-- REMOVE ME -->
+        <dependency>
+          <groupId>postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>9.0-801.jdbc4</version>
+        </dependency>
+        <!-- END REMOVE ME -->
+        <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
             <version>${appengine.target.version}</version>
