@@ -1,1 +1,1 @@
-web:    java -cp target/classes:target/dependency/* com.supertictactoe.web.Main
+web:    java -cp target/classes:target/dependency/* Main

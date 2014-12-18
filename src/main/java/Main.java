@@ -1,5 +1,3 @@
-package com.supertictactoe.web;
-
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -8,6 +6,7 @@ import org.eclipse.jetty.servlet.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import com.supertictactoe.web.*;
 
 public class Main extends HttpServlet {
   @Override
@@ -60,11 +59,13 @@ public class Main extends HttpServlet {
   public static void main(String[] args) throws Exception{
     Server server = new Server(Integer.valueOf(System.getenv("PORT")));
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+
     context.setContextPath("/");
     server.setHandler(context);
     context.addServlet(new ServletHolder(new Main()),"/Main");
     context.addServlet(new ServletHolder(new AIMoveServlet()), "/AIMove");
     context.addServlet(new ServletHolder(new PlayerMoveServlet()), "/PlayerMove");
+
     server.start();
     server.join();
   }
