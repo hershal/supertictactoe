@@ -97,8 +97,11 @@ function handle_session_jump_input() {
 
 function handle_reset_button() {
 
+    document.getElementById("allow_random_checkbox").checked = false;
+
     game_random_ref.remove();
     game_ref.remove();
+
     window.location.reload();
 }
 
