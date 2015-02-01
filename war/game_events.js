@@ -181,6 +181,8 @@ function disable_allow_random() {
 function enable_allow_random() {
 
     $("#allow_random_checkbox").prop("disabled", false);
-    game_random_ref.set(game_random_ref.name());
+    if (document.getElementById("allow_random_checkbox").checked == true) {
+        game_random_ref.set(game_random_ref.name());
+    }
     console.log("enabled allow random");
 }
