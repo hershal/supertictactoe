@@ -22,8 +22,10 @@ function init_session_id() {
     if (hash) {
         ref = ref.child(hash);
     } else {
-        ref = ref.push(); // generate unique location.
-        window.location = window.location.pathname + '#' + ref.name(); // add it as a hash to the URL.
+        /* generate unique location. */
+        ref = ref.push();
+        /* add it as a hash to the URL. */
+        window.location = window.location.pathname + '#' + ref.name().replace(/^-/g,'');
     }
 
     if (typeof console !== 'undefined')
